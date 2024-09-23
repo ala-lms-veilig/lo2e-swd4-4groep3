@@ -1,0 +1,115 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Navigatiebalk */
+nav {
+    background-color: #63c5d0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #111;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links li a {
+    background-color: #f5515f;
+    color: white;
+    padding: 10px 100px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+    
+}
+
+.nav-links li a:hover {
+    background-color: #d9404d;
+}
+
+/* Hoofdsectie */
+.container {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 300px;
+    max-width: 1000px;
+    margin-top: 280px;
+    
+}
+
+.text {
+    max-width: 60%;
+    text-align: left;
+}
+
+.buttons {
+    margin-top: 40px;
+}
+
+.buttons button {
+    background-color: #e83a4f;
+    color: white;
+    border: none;
+    padding: 10px 50px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.buttons button:hover {
+    background-color: #c5303e;
+}
+
+.image {
+    max-width: 30%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Footer */
+footer {
+    background-color: #63c5d0;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+    width: 100%;
+}
+
+footer p {
+    color: #111;
+    font-size: 18px;
+}
