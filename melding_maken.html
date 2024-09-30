@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melding Maken</title>
+    <style>
+        /* Reset standaard marges en padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Zorg ervoor dat html en body de volledige breedte en hoogte benutten */
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0; /* Verwijder alle marges */
+        }
+
+        /* Navigatiebalk */
+        nav {
+            background-color: #63c5d0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            width: 100%; /* Zorg dat de nav 100% breed is */
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px; /* Geeft ruimte tussen de items */
+        }
+
+        .nav-links li {
+            margin: 0;
+        }
+
+        .nav-links li a {
+            background-color: #f5515f;
+            color: white;
+            padding: 10px 20px; /* Verkleint de breedte van de knoppen */
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .nav-links li a:hover {
+            background-color: #d9404d;
+        }
+
+        /* Zorg dat de knoppen voor login en welkomsmelding ook mooi uitgelijnd zijn */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Ruimte tussen de tekst en de uitlogknop */
+        }
+
+        #logoutButton {
+            background-color: #f5515f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #logoutButton:hover {
+            background-color: #d9404d;
+        }
+
+        main {
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 50px auto; /* Centraal plaatsen van het formulier */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        select, input[type="text"], textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        input[type="submit"] {
+            background-color: #f5515f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #d9404d;
+        }
+
+        /* Zorg ervoor dat de footer altijd onderaan de pagina blijft */
+        footer {
+            background-color: #63c5d0;
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        footer p {
+            color: #111;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">mborijn/land</div>
+            <ul class="nav-links">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="informatie.html">INFORMATIE</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="melding_maken.html">MELDING MAKEN</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <span id="welcomeMessage">Welkom!</span>
+                <button id="logoutButton">Uitloggen</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Maak een Melding</h1>
+        <form id="meldingForm">
+            <label for="categorie">Type incident:</label>
+            <select name="categorie" id="categorie" required>
+                <option value="">-- Maak een keuze --</option>
+                <option value="geweld">Geweld</option>
+                <option value="geluidsoverlast">Geluidsoverlast</option>
+                <option value="diefstal">Diefstal</option>
+                <option value="technische storingen">Technische Storing</option>
+                <option value="inbraak">Inbraak</option>
+                <option value="pesten">Pesten</option>
+                <option value="overige">Overige</option>
+            </select>
+
+            <label for="locatie">Op welke locatie heeft dit plaatsgevonden?</label>
+            <select name="locatie" id="locatie" required>
+                <option value="">-- Maak een keuze --</option>
+                <option value="aula">Aula</option>
+                <option value="locatie1">Locatie 1</option>
+                <option value="locatie2">Locatie 2</option>
+                <option value="locatie3">Locatie 3</option>
+            </select>
+
+            <label for="beschrijving">Beschrijving incident:</label>
+            <textarea name="beschrijving" id="beschrijving" rows="5" required placeholder="Beschrijf het incident zo compleet mogelijk..."></textarea>
+
+            <h2>Persoonlijke Gegevens</h2>
+
+            <label for="aanhef">Aanhef:</label>
+            <select name="aanhef" id="aanhef" required>
+                <option value="heer">De heer</option>
+                <option value="mevrouw">Mevrouw</option>
+            </select>
+
+            <label for="naam">Naam:</label>
+            <input type="text" id="naam" name="naam" required readonly>
+
+            <div class="button-group">
+                <input type="submit" value="Verzenden">
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 mborijn/land. Alle rechten voorbehouden.</p>
+    </footer>
+
+    <script>
+        // Controleer inlogstatus
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html'; // Redirect naar login als niet ingelogd
+        }
+
+        // Haal naam op uit localStorage en vul het in het veld 'naam'
+        const userName = localStorage.getItem('userName') || 'Gebruiker';
+        document.getElementById('naam').value = userName;
+
+        // Uitlogfunctionaliteit
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName'); // Optioneel: Verwijder ook de naam
+            window.location.href = 'login.html';
+        });
+
+        // Verwerking van het formulier
+        document.getElementById('meldingForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Voorkom traditionele form submission
+            const categorie = document.getElementById('categorie').value;
+            const beschrijving = document.getElementById('beschrijving').value;
+            const locatie = document.getElementById('locatie').value;
+
+            console.log(`Categorie: ${categorie}`);
+            console.log(`Beschrijving: ${beschrijving}`);
+            console.log(`Locatie: ${locatie}`);
+
+            alert('Melding verstuurd!');
+
+            document.getElementById('meldingForm').reset();
+        });
+    </script>
+</body>
+</html>
