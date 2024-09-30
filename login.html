@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inloggen</title>
+</head>
+<body>
+    <h2>Inloggen</h2>
+
+    <form id="loginForm">
+        <label for="email">E-mailadres:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Wachtwoord:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Inloggen</button>
+    </form>
+
+    <p><a href="change_password.html">Wachtwoord vergeten? Wijzig hier je wachtwoord.</a></p>
+    <p id="message"></p>
+
+    <script>
+        // Verwerk het loginformulier
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();  // Voorkom dat het formulier opnieuw laadt
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Haal de opgeslagen gebruiker op uit localStorage op basis van het ingevoerde e-mailadres
+            const opgeslagenGebruiker = localStorage.getItem(email);
+
+            if (!opgeslagenGebruiker) {
+                // Als er geen gebruiker met dit e-mailadres bestaat
+                document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
+                return;
+            }
+
+            // Parse de opgeslagen gebruiker
+            const gebruiker = JSON.parse(opgeslagenGebruiker);
+
+            // Controleer of het wachtwoord correct is
+            if (gebruiker.wachtwoord === password) {
+                // Sla de inlogstatus en gebruikersgegevens op in localStorage
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userName', gebruiker.username);
+
+                // Stuur door naar het juiste dashboard op basis van de rol
+                if (gebruiker.rol === 'docent') {
+                    window.location.href = 'docent_dashboard.html';
+                } else if (gebruiker.rol === 'leerling') {
+                    window.location.href = 'leerling_dashboard.html';
+                } else if (gebruiker.rol === 'beveiliger') {
+                    window.location.href = 'beveiliger_dashboard.html';
+                } else if (gebruiker.rol === 'beheerder') {
+                    window.location.href = 'beheerder_dashboard.html';
+                }
+            } else {
+                // Foutmelding bij onjuist wachtwoord
+                document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
+            }
+        });
+    </script>
+</body>
+</html>
