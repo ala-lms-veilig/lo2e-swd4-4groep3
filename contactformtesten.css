@@ -21,6 +21,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
 }
+
 button:hover {
     background-color: #3a0f49;
 }
@@ -41,7 +42,7 @@ body {
     justify-content: center;
     align-items: center;
 }
-
+    
 /* Navigatiebalk */
 nav {
     background-color: #63c5d0;

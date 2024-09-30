@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - mboRijnland</title>
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="contactformtesten.css">
 </head>
 <body>
 
@@ -18,19 +18,33 @@
         </ul>
     </nav>
 
-<div class="container">
-    <section class="contact-section">
-        <h1>Contact</h1><br><br>
-        <div class="contact-info">
-            <h2>Heb je een vraag?</h2><br>
-            <p>Het antwoord op de meeste vragen vind je op deze website. Heb je toch nog vragen? Neem dan contact met ons op:</p><br>
-            <ul><br>
-                <li>Telefoonnummer: 📞 088 222 17 77 (bereikbaar tussen 08.00 – 17.00 uur)</li><br>
-                <li>E-mailadres: ✉️ <a href="mailto:info@mborijnland.nl">info@mborijnland.nl</a></li><p</li><p>(niet voor ziekmeldingen, dit gaat via het portaal)</p>
-            </ul><br>
-            <p>In de <a href="#">schoolvakanties</a> zijn wij op werkdagen telefonisch en per e-mail bereikbaar tussen 10.00 – 16.00 uur.</p><br>
-            <p>Belt u vanuit een bedrijf en heeft u een vraag of klacht? Neemt u dan contact op met Connect via <a href="mailto:connect@mborijnland.nl">connect@mborijnland.nl</a>.</p><br><br>
-        </div>
+    <div class="container">
+        <section class="contact-section">
+            <br><br>
+            <div class="contact-info">
+                <h2>Heb je een vraag?</h2><br>
+                <p>Het antwoord op de meeste vragen vind je op deze website. Heb je toch nog vragen? Neem dan contact met ons op:</p><br>
+                <ul><br>
+                    <li>Telefoonnummer: 📞 088 222 17 77 (bereikbaar tussen 08.00 – 17.00 uur)</li><br>
+                    <li>E-mailadres: ✉️ <a href="mailto:info@mborijnland.nl">info@mborijnland.nl</a></li><p</li><p>(niet voor ziekmeldingen, dit gaat via het portaal)</p>
+                </ul><br>
+                <p>In de <a href="#">schoolvakanties</a> zijn wij op werkdagen telefonisch en per e-mail bereikbaar tussen 10.00 – 16.00 uur.</p><br>
+                <p>Belt u vanuit een bedrijf en heeft u een vraag of klacht? Neemt u dan contact op met Connect via <a href="mailto:connect@mborijnland.nl">connect@mborijnland.nl</a>.</p><br><br>
+            </div>
+    
+        <form action="submit_form.php" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+        
+            <button type="submit">Send Message</button>
+        </form>
+    
 
         <div class="locations">
             
