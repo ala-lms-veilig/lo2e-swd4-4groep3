@@ -22,33 +22,26 @@
     <p id="message"></p>
 
     <script>
-        // Verwerk het loginformulier
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();  // Voorkom dat het formulier opnieuw laadt
+            event.preventDefault();  
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Haal de opgeslagen gebruiker op uit localStorage op basis van het ingevoerde e-mailadres
             const opgeslagenGebruiker = localStorage.getItem(email);
 
             if (!opgeslagenGebruiker) {
-                // Als er geen gebruiker met dit e-mailadres bestaat
                 document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
                 return;
             }
 
-            // Parse de opgeslagen gebruiker
             const gebruiker = JSON.parse(opgeslagenGebruiker);
 
-            // Controleer of het wachtwoord correct is
             if (gebruiker.wachtwoord === password) {
-                // Sla de inlogstatus en gebruikersgegevens op in localStorage
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
                 localStorage.setItem('userName', gebruiker.username);
 
-                // Stuur door naar het juiste dashboard op basis van de rol
                 if (gebruiker.rol === 'docent') {
                     window.location.href = 'index.html';
                 } else if (gebruiker.rol === 'leerling') {
@@ -59,7 +52,6 @@
                     window.location.href = 'beheerder_dashboard.html';
                 }
             } else {
-                // Foutmelding bij onjuist wachtwoord
                 document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
             }
         });
