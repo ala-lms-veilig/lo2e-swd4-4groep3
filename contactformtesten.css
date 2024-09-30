@@ -165,6 +165,9 @@ label {
 
 .locations {
     margin-top: 20px;
+    background-color: #63c5d0; 
+    border-radius: 4px;
+    width: 35em;
 }
 
 
