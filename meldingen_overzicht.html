@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meldingen Overzicht</title>
+    <style>
+        /* Basis stijlen voor de pagina */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Stijlen voor het meldingsoverzicht */
+        .melding {
+            background-color: #fff;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .melding:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .melding-header {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .melding-header span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .melding-beschrijving {
+            display: none;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .melding.open .melding-beschrijving {
+            display: block;
+        }
+
+        /* Kleine hover-indicatie voor actie */
+        .show-more {
+            font-size: 12px;
+            color: #f5515f;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Meldingen Overzicht</h1>
+
+    <div id="meldingContainer"></div>
+
+    <script>
+        // Dummy data voor meldingen (normaliter zou dit uit localStorage komen)
+        const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [
+            {
+                categorie: 'Geweld',
+                beschrijving: 'Een conflict tussen twee studenten liep uit de hand, er is fysiek geweld gebruikt...',
+                locatie: 'Aula',
+                naam: 'John Doe',
+                datum: '27-09-2024 14:35'
+            },
+            {
+                categorie: 'Geluidsoverlast',
+                beschrijving: 'Er was harde muziek te horen in de gang, wat voor overlast zorgde bij meerdere lessen...',
+                locatie: 'Locatie 2',
+                naam: 'Jane Smith',
+                datum: '26-09-2024 10:20'
+            }
+        ];
+
+        // Functie om de meldingen in de DOM te laden
+        function laadMeldingen() {
+            const container = document.getElementById('meldingContainer');
+            container.innerHTML = ''; // Maak het overzicht leeg
+
+            meldingen.forEach((melding, index) => {
+                // Creëer een melding element
+                const meldingElement = document.createElement('div');
+                meldingElement.classList.add('melding');
+                
+                // Toon een korte versie van de melding (categorie en locatie)
+                meldingElement.innerHTML = `
+                    <div class="melding-header">
+                        <span>${melding.categorie} - ${melding.locatie}</span>
+                        <span>${melding.datum}</span>
+                    </div>
+                    <div class="melding-beschrijving">
+                        <p>${melding.beschrijving}</p>
+                        <p><strong>Gemeld door:</strong> ${melding.naam}</p>
+                    </div>
+                    <span class="show-more">Toon meer</span>
+                `;
+
+                // Voeg de melding toe aan de container
+                container.appendChild(meldingElement);
+
+                // Voeg klikfunctionaliteit toe om de melding uit te klappen
+                meldingElement.addEventListener('click', function () {
+                    this.classList.toggle('open');
+                    const showMoreText = this.classList.contains('open') ? 'Toon minder' : 'Toon meer';
+                    this.querySelector('.show-more').innerText = showMoreText;
+                });
+            });
+        }
+
+        // Roep de functie aan om de meldingen te laden
+        laadMeldingen();
+    </script>
+
+</body>
+</html>

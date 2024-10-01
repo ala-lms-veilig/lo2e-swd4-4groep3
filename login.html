@@ -4,44 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inloggen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            margin-top: 15px;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Inloggen</h2>
-
-    <form id="loginForm">
-        <label for="email">E-mailadres:</label>
-        <input type="email" id="email" name="email" required><br><br>
-
-        <label for="password">Wachtwoord:</label>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <button type="submit">Inloggen</button>
-    </form>
-
-    <p><a href="change_password.html">Wachtwoord vergeten? Wijzig hier je wachtwoord.</a></p>
-    <p id="message"></p>
+    <div class="login-container">
+        <h2>Inloggen</h2>
+        <form id="loginForm">
+            <input type="email" id="email" name="email" placeholder="E-mailadres" required><br>
+            <input type="password" id="password" name="password" placeholder="Wachtwoord" required><br>
+            <button type="submit">Inloggen</button>
+        </form>
+        <p><a href="change_password.html">Wachtwoord vergeten?</a></p>
+        <p id="message" class="error-message"></p>
+    </div>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();  
+            event.preventDefault();  // Voorkom dat de pagina herlaadt
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
+            // Haal gebruiker op uit localStorage
             const opgeslagenGebruiker = localStorage.getItem(email);
 
+            // Als de gebruiker niet bestaat
             if (!opgeslagenGebruiker) {
                 document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
                 return;
             }
 
+            // Parseer de opgeslagen gebruiker om het wachtwoord en rol te controleren
             const gebruiker = JSON.parse(opgeslagenGebruiker);
 
+            // Controleer wachtwoord
             if (gebruiker.wachtwoord === password) {
+                // Gebruiker is succesvol ingelogd, sla gegevens op in localStorage
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
-                localStorage.setItem('userName', gebruiker.username);
+                localStorage.setItem('userName', gebruiker.gebruikersnaam);  // Gebruik 'gebruikersnaam' in plaats van 'username'
+                localStorage.setItem('userRole', gebruiker.rol);
 
+                // Redirect op basis van de rol
                 if (gebruiker.rol === 'docent') {
                     window.location.href = 'index.html';
                 } else if (gebruiker.rol === 'leerling') {
@@ -50,8 +108,11 @@
                     window.location.href = 'beveiliger_dashboard.html';
                 } else if (gebruiker.rol === 'beheerder') {
                     window.location.href = 'beheerder_dashboard.html';
+                } else {
+                    document.getElementById('message').innerText = "Onbekende rol. Neem contact op met de beheerder.";
                 }
             } else {
+                // Ongeldig wachtwoord
                 document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
             }
         });
