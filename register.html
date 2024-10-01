@@ -32,45 +32,38 @@
     <p id="message"></p>
 
     <script>
-        // Verwerk het registratieformulier
+        
         document.getElementById('registerForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Voorkom dat het formulier opnieuw laadt
+            event.preventDefault(); 
 
             const email = document.getElementById('email').value;
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const role = document.getElementById('role').value;
 
-            // Controleer of de e-mail al bestaat
             const bestaandeGebruiker = localStorage.getItem(email);
 
             if (bestaandeGebruiker) {
-                // Als het e-mailadres al bestaat
                 document.getElementById('message').innerText = "Dit e-mailadres is al geregistreerd. Gebruik een ander e-mailadres.";
             } else {
-                // Sla nieuwe gebruiker op in localStorage
                 const nieuweGebruiker = {
                     gebruikersnaam: username,
                     wachtwoord: password,
                     rol: role
                 };
 
-                // Zet de nieuwe gebruiker in localStorage, met het e-mailadres als sleutel
                 localStorage.setItem(email, JSON.stringify(nieuweGebruiker));
 
                 document.getElementById('message').innerHTML = "Registratie succesvol! Je wordt doorgestuurd naar de loginpagina.";
 
-                // Reset het formulier
                 document.getElementById('registerForm').reset();
 
-                // Console log om te bevestigen dat we in de setTimeout komen
                 console.log("Registratie gelukt. Gebruiker wordt doorgestuurd naar login.html.");
 
-                // Redirect na 2 seconden naar de loginpagina
                 setTimeout(function() {
                     console.log("Doorsturen naar login.html");
-                    window.location.href = 'login.html'; // Zorg ervoor dat deze pagina bestaat!
-                }, 2000); // Wacht 2 seconden voordat er wordt doorgestuurd
+                    window.location.href = 'login.html'; 
+                }, 2000); 
             }
         });
     </script>

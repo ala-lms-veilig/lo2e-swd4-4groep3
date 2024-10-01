@@ -100,6 +100,24 @@ form {
     display: flex;
     flex-direction: column;
     gap: 15px;
+}
+    .contact-info h2 {
+    background-color: #e54160;
+    border-radius: 4px;
+    width: 8.8em;   
+}
+
+label {
+    margin-bottom: 5px;
+    background-color: #e54160; 
+    padding: 5px; 
+    display: inline-block; 
+    color: white; 
+    width: 5em;
+}
+
+
+.locations {
     margin-top: 20px;
 }
 
