@@ -71,61 +71,57 @@
     <div id="meldingContainer"></div>
 
     <script>
-        // Dummy data voor meldingen (normaliter zou dit uit localStorage komen)
-        const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [
-            {
-                categorie: 'Geweld',
-                beschrijving: 'Een conflict tussen twee studenten liep uit de hand, er is fysiek geweld gebruikt...',
-                locatie: 'Aula',
-                naam: 'John Doe',
-                datum: '27-09-2024 14:35'
-            },
-            {
-                categorie: 'Geluidsoverlast',
-                beschrijving: 'Er was harde muziek te horen in de gang, wat voor overlast zorgde bij meerdere lessen...',
-                locatie: 'Locatie 2',
-                naam: 'Jane Smith',
-                datum: '26-09-2024 10:20'
-            }
-        ];
+        // Controleer inlogstatus en rol van de gebruiker
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const userRole = localStorage.getItem('userRole');
 
-        // Functie om de meldingen in de DOM te laden
-        function laadMeldingen() {
-            const container = document.getElementById('meldingContainer');
-            container.innerHTML = ''; // Maak het overzicht leeg
+        // Toegestane rollen die de meldingen mogen bekijken
+        const toegestaneRollen = ['docent', 'beveiliger', 'beheerder'];
 
-            meldingen.forEach((melding, index) => {
-                // Creëer een melding element
-                const meldingElement = document.createElement('div');
-                meldingElement.classList.add('melding');
-                
-                // Toon een korte versie van de melding (categorie en locatie)
-                meldingElement.innerHTML = `
-                    <div class="melding-header">
-                        <span>${melding.categorie} - ${melding.locatie}</span>
-                        <span>${melding.datum}</span>
-                    </div>
-                    <div class="melding-beschrijving">
-                        <p>${melding.beschrijving}</p>
-                        <p><strong>Gemeld door:</strong> ${melding.naam}</p>
-                    </div>
-                    <span class="show-more">Toon meer</span>
-                `;
+        // Controleer of de gebruiker ingelogd is en of de gebruiker de juiste rol heeft
+        if (isLoggedIn !== 'true' || !toegestaneRollen.includes(userRole)) {
+            alert("Je hebt geen toegang tot deze pagina.");
+            window.location.href = 'index.html'; // Redirect naar homepagina
+        } else {
+            // Functie om de meldingen in de DOM te laden
+            function laadMeldingen() {
+                const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
+                const container = document.getElementById('meldingContainer');
+                container.innerHTML = ''; // Maak het overzicht leeg
 
-                // Voeg de melding toe aan de container
-                container.appendChild(meldingElement);
+                meldingen.forEach(melding => {
+                    // Creëer een melding element
+                    const meldingElement = document.createElement('div');
+                    meldingElement.classList.add('melding');
+                    
+                    // Toon een korte versie van de melding (categorie en locatie)
+                    meldingElement.innerHTML = `
+                        <div class="melding-header">
+                            <span>${melding.categorie} - ${melding.locatie}</span>
+                            <span>${melding.datum}</span>
+                        </div>
+                        <div class="melding-beschrijving">
+                            <p>${melding.beschrijving}</p>
+                            <p><strong>Gemeld door:</strong> ${melding.naam}</p>
+                        </div>
+                        <span class="show-more">Toon meer</span>
+                    `;
 
-                // Voeg klikfunctionaliteit toe om de melding uit te klappen
-                meldingElement.addEventListener('click', function () {
-                    this.classList.toggle('open');
-                    const showMoreText = this.classList.contains('open') ? 'Toon minder' : 'Toon meer';
-                    this.querySelector('.show-more').innerText = showMoreText;
+                    // Voeg de melding toe aan de container
+                    container.appendChild(meldingElement);
+
+                    // Voeg klikfunctionaliteit toe om de melding uit te klappen
+                    meldingElement.addEventListener('click', function () {
+                        this.classList.toggle('open');
+                        const showMoreText = this.classList.contains('open') ? 'Toon minder' : 'Toon meer';
+                        this.querySelector('.show-more').innerText = showMoreText;
+                    });
                 });
-            });
-        }
+            }
 
-        // Roep de functie aan om de meldingen te laden
-        laadMeldingen();
+            // Roep de functie aan om de meldingen te laden
+            laadMeldingen();
+        }
     </script>
 
 </body>
