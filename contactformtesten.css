@@ -1,31 +1,4 @@
-form {
-    max-width: 400px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-}
-label {
-    margin-bottom: 5px;
-}
-input, textarea {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-button {
-    padding: 10px;
-    background-color: #e54160;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #3a0f49;
-}
-
+/* General */
 * {
     margin: 0;
     padding: 0;
@@ -37,33 +10,40 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    justify-content: center;
-    align-items: center;
+    background-color: #f4f4f4;
 }
-    
-/* Navigatiebalk */
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+/* Navigation Bar */
 nav {
-    background-color: #63c5d0;
+    background-color: #2E0E4A; /* Dark blue */
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .logo {
     font-size: 24px;
     font-weight: bold;
-    color: #111;
+    color: #ffffff;
 }
 
 .nav-links {
     list-style: none;
     display: flex;
     justify-content: space-between;
-    width: 70%;
 }
 
 .nav-links li {
@@ -71,75 +51,43 @@ nav {
 }
 
 .nav-links li a {
-    background-color: #f5515f;
+    background-color: #ec4a67; /* Purple tone */
     color: white;
-    padding: 10px 100px;
+    padding: 10px 20px;
     text-decoration: none;
     font-size: 16px;
     border-radius: 4px;
-    
 }
 
 .nav-links li a:hover {
-    background-color: #d9404d;
+    background-color: #ec4a67; /* Darker purple for hover */
 }
 
-/* Hoofdsectie */
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0px;
-    max-width: 1500px;
-    margin-top: 150px;
-    padding: 20px;
-}
-
-.text {
-    max-width: 60%;
-    text-align: left;
-}
-
-.buttons {
-    margin-top: 40px;
-    display: flex;
-    gap: 10px;
-}
-
-.buttons button {
-    background-color: #e83a4f;
-    color: white;
-    border: none;
-    padding: 10px 50px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.buttons button:hover {
-    background-color: #c5303e;
-}
-
-.image img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-/* Contactpagina */
+/* Contact Section */
 .contact-section {
-    width: 90%;
+    width: 70%;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-
+.contact-info h2 {
+    color: #ec4a67; /* Red tone */
+    margin-bottom: 10px;
+}
 
 .contact-info ul {
     list-style: none;
     padding-left: 0;
 }
 
+.contact-info p, ul li {
+    margin-bottom: 10px;
+}
+
 .contact-info a {
-    color: #b90063;
+    color: #ec4a67;
     text-decoration: none;
 }
 
@@ -147,7 +95,13 @@ nav {
     text-decoration: underline;
 }
 
-.contact-info h2 {
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+    .contact-info h2 {
     background-color: #e54160;
     border-radius: 4px;
     width: 8.8em;   
@@ -170,57 +124,76 @@ label {
     width: 35em;
 }
 
-
-
-.address p {
-    margin: 5px 0;
+label {
+    font-weight: bold;
 }
 
-/* Sidebar */
+input, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+button {
+    padding: 10px;
+    background-color: #ec4a67; /* Red tone */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ec4a67; /* Darker red for hover */
+}
+
+/* Sidebar Styling */
 .sidebar {
     width: 25%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.sidebar .help, .sidebar .meldpunt {
-    
+.sidebar div {
+    background-color: white;
     padding: 20px;
-    margin-bottom: 20px;
-
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h3 {
-    color: #e83a4f;
+    color: #ec4a67; /* Red tone */
 }
 
 .sidebar button {
-    background-color: #e83a4f;
+    background-color: #ec4a67;
     color: white;
     border: none;
-    padding: 10px 50px;
-    margin-right: 10px;
+    padding: 10px;
+    width: 100%;
     cursor: pointer;
     border-radius: 5px;
 }
 
 .sidebar button:hover {
-    background-color: #c5303e;
-}
-
-.meldpunt p {
-    font-size: 14px;
-    line-height: 1.6;
+    background-color: #ec4a67; /* Darker red for hover */
 }
 
 /* Footer */
 footer {
-    background-color: #63c5d0;
+    background-color: #2E0E4A; /* Dark blue */
+    color: white;
     text-align: center;
     padding: 20px 0;
     margin-top: auto;
     width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
 }
 
 footer p {
-    color: #111;
     font-size: 18px;
 }

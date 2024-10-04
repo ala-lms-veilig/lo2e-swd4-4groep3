@@ -25,54 +25,46 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            margin: 0; /* Verwijder alle marges */
         }
 
         /* Navigatiebalk */
-        nav {
-            background-color: #63c5d0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            width: 100%; /* Zorg dat de nav 100% breed is */
-        }
+nav {
+    background-color: #2E0E4A;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #111;
-        }
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            gap: 20px; /* Geeft ruimte tussen de items */
-        }
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
 
-        .nav-links li {
-            margin: 0;
-        }
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    background-color: #ec4a67;
+    border-radius: 4px;
+}
 
-        .nav-links li a {
-            background-color: #f5515f;
-            color: white;
-            padding: 10px 20px; /* Verkleint de breedte van de knoppen */
-            text-decoration: none;
-            font-size: 16px;
-            border-radius: 4px;
-        }
-
-        .nav-links li a:hover {
-            background-color: #d9404d;
-        }
-
-        /* Zorg dat de knoppen voor login en welkomsmelding ook mooi uitgelijnd zijn */
         .auth-buttons {
             display: flex;
             align-items: center;
-            gap: 10px; /* Ruimte tussen de tekst en de uitlogknop */
+            gap: 10px; 
+            color: white;
         }
 
         #logoutButton {
@@ -94,7 +86,7 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 800px;
-            margin: 50px auto; /* Centraal plaatsen van het formulier */
+            margin: 50px auto; 
         }
 
         h1 {
@@ -139,24 +131,35 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s; /* Voor een vloeiende hover-effect */
         }
 
         input[type="submit"]:hover {
             background-color: #d9404d;
         }
 
-        /* Zorg ervoor dat de footer altijd onderaan de pagina blijft */
-        footer {
-            background-color: #63c5d0;
-            text-align: center;
-            padding: 20px;
-            margin-top: auto;
-            width: 100%;
-        }
+        /* Footer */
+footer {
+    background-color: #2E0E4A;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
 
         footer p {
-            color: #111;
+            color: white;
             font-size: 18px;
+        }
+
+        #specifiekeLocatie {
+            display: none;
+        }
+
+        /* Foutmelding styling */
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            display: none; /* Standaard niet zichtbaar */
         }
     </style>
 </head>
@@ -201,6 +204,9 @@
                 <option value="locatie3">Locatie 3</option>
             </select>
 
+            <!-- Tekstvak voor specifieke locatie -->
+            <textarea id="specifiekeLocatie" placeholder="Specifieke locatie (bijv. bij de ingang van de aula)"></textarea>
+
             <label for="beschrijving">Beschrijving incident:</label>
             <textarea name="beschrijving" id="beschrijving" rows="5" required placeholder="Beschrijf het incident zo compleet mogelijk..."></textarea>
 
@@ -215,9 +221,13 @@
             <label for="naam">Naam:</label>
             <input type="text" id="naam" name="naam" required readonly>
 
+            <label for="rol">Rol:</label>
+            <input type="text" id="rol" name="rol" required readonly>
+
             <div class="button-group">
                 <input type="submit" value="Verzenden">
             </div>
+            <p id="error-message" class="error-message"></p> <!-- Foutmelding hier toegevoegd -->
         </form>
     </main>
 
@@ -231,32 +241,85 @@
             window.location.href = 'login.html'; // Redirect naar login als niet ingelogd
         }
 
-        // Haal naam op uit localStorage en vul het in het veld 'naam'
+        // Haal naam en rol op uit localStorage en vul deze in de juiste velden
         const userName = localStorage.getItem('userName') || 'Gebruiker';
+        const userRole = localStorage.getItem('userRole') || 'Onbekende rol'; 
         document.getElementById('naam').value = userName;
+        document.getElementById('rol').value = userRole;
 
         // Uitlogfunctionaliteit
         document.getElementById('logoutButton').addEventListener('click', function () {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userEmail');
-            localStorage.removeItem('userName'); // Optioneel: Verwijder ook de naam
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole'); 
             window.location.href = 'login.html';
+        });
+
+        // Toon het specifieke locatie tekstvak als een locatie is geselecteerd
+        document.getElementById('locatie').addEventListener('change', function () {
+            const specifiekeLocatie = document.getElementById('specifiekeLocatie');
+            if (this.value !== "") {
+                specifiekeLocatie.style.display = 'block';
+            } else {
+                specifiekeLocatie.style.display = 'none';
+            }
         });
 
         // Verwerking van het formulier
         document.getElementById('meldingForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Voorkom traditionele form submission
+            event.preventDefault(); // Voorkom dat het formulier opnieuw laadt
+
+            // Haal waarden op
             const categorie = document.getElementById('categorie').value;
             const beschrijving = document.getElementById('beschrijving').value;
             const locatie = document.getElementById('locatie').value;
+            const specifiekeLocatie = document.getElementById('specifiekeLocatie').value;
+            const naam = document.getElementById('naam').value;
+            const rol = document.getElementById('rol').value;
 
-            console.log(`Categorie: ${categorie}`);
-            console.log(`Beschrijving: ${beschrijving}`);
-            console.log(`Locatie: ${locatie}`);
+            // Validatie
+            let errorMessage = "";
+            if (categorie === "") errorMessage += "Kies een categorie. ";
+            if (locatie === "") errorMessage += "Kies een locatie. ";
+            if (locatie !== "" && specifiekeLocatie.trim() === "") errorMessage += "Specificeer de locatie. ";
+            if (beschrijving.trim() === "") errorMessage += "Voer een beschrijving in. ";
 
-            alert('Melding verstuurd!');
+            if (errorMessage) {
+                document.getElementById('error-message').innerText = errorMessage;
+                document.getElementById('error-message').style.display = 'block';
+                return; // Stop de verwerking van het formulier
+            } else {
+                document.getElementById('error-message').style.display = 'none'; // Verberg eventuele foutmelding
+            }
 
+            // Maak een melding object
+            const nieuweMelding = {
+                categorie,
+                beschrijving,
+                locatie,
+                specifiekeLocatie,
+                naam,
+                rol,
+                datum: new Date().toLocaleString()
+            };
+
+            // Haal de bestaande meldingen op uit localStorage
+            let meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
+
+            // Voeg de nieuwe melding toe aan de array
+            meldingen.push(nieuweMelding);
+
+            // Sla de bijgewerkte array weer op in localStorage
+            localStorage.setItem('meldingen', JSON.stringify(meldingen));
+
+            alert('Melding succesvol opgeslagen!');
+
+            // Reset het formulier maar behoud naam en rol
             document.getElementById('meldingForm').reset();
+            document.getElementById('naam').value = userName; // Naam behouden
+            document.getElementById('rol').value = userRole; // Rol behouden
+            document.getElementById('specifiekeLocatie').style.display = 'none'; // Verberg het specifieke locatie tekstvak na verzenden
         });
     </script>
 </body>
