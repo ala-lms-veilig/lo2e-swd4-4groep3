@@ -58,6 +58,15 @@
             color: red;
             margin-top: 10px;
         }
+
+        .register-btn {
+            background-color: #008CBA;
+            margin-top: 10px;
+        }
+
+        .register-btn:hover {
+            background-color: #007bb5;
+        }
     </style>
 </head>
 <body>
@@ -70,6 +79,9 @@
         </form>
         <p><a href="change_password.html">Wachtwoord vergeten?</a></p>
         <p id="message" class="error-message"></p>
+
+        <!-- Toegevoegde knop voor registratie -->
+        <button class="register-btn" onclick="window.location.href='register.html'">Registreren</button>
     </div>
 
     <script>
@@ -103,11 +115,11 @@
                 if (gebruiker.rol === 'docent') {
                     window.location.href = 'index.html';
                 } else if (gebruiker.rol === 'leerling') {
-                    window.location.href = 'leerling_dashboard.html';
+                    window.location.href = 'index.html';
                 } else if (gebruiker.rol === 'beveiliger') {
-                    window.location.href = 'beveiliger_dashboard.html';
+                    window.location.href = 'index.html';
                 } else if (gebruiker.rol === 'beheerder') {
-                    window.location.href = 'beheerder_dashboard.html';
+                    window.location.href = 'index.html';
                 } else {
                     document.getElementById('message').innerText = "Onbekende rol. Neem contact op met de beheerder.";
                 }
