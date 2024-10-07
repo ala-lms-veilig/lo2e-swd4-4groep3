@@ -1,0 +1,44 @@
+{
+  "incidenten": [
+    {
+      "id": 1,
+      "omschrijving": "Vandalisme in het klaslokaal",
+      "datum": "2024-09-25",
+      "status": "open"
+    },
+    {
+      "id": 2,
+      "omschrijving": "Brandalarm afgegaan",
+      "datum": "2024-09-26",
+      "status": "opgelost"
+    }
+  ],
+  "contacten": [
+    {
+      "id": 1,
+      "naam": "John Doe",
+      "telefoon": "0612345678",
+      "email": "john@example.com"
+    },
+    {
+      "id": 2,
+      "naam": "Jane Smith",
+      "telefoon": "0687654321",
+      "email": "jane@example.com"
+    }
+  ],
+  "storingen": [
+    {
+      "id": 1,
+      "omschrijving": "Internetverbinding valt weg",
+      "datum": "2024-09-27",
+      "opgelost": false
+    },
+    {
+      "id": 2,
+      "omschrijving": "Lichten werken niet",
+      "datum": "2024-09-28",
+      "opgelost": true
+    }
+  ]
+}
