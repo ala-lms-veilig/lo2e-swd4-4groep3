@@ -38,18 +38,21 @@
                 <p>Belt u vanuit een bedrijf en heeft u een vraag of klacht? Neemt u dan contact op met Connect via <a href="mailto:connect@mborijnland.nl">connect@mborijnland.nl</a>.</p><br><br>
             </div>
     
-        <form action="submit_form.php" method="POST">
+        <form id="contactForm">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
-        
+    
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
-        
+    
             <label for="message">Message:</label>
             <textarea id="message" name="message" rows="4" required></textarea>
-        
+    
             <button type="submit">Send Message</button>
         </form>
+
+<p id="responseMessage"></p>
+
     
 
         <div class="locations">
@@ -78,6 +81,13 @@
 
     
 </div>
+
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <p>Bedankt voor je bericht! We nemen snel contact met je op.</p>
+    </div>
+</div>4
 
 <footer>
     <p>&copy; 2024 mborijnland</p>

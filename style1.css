@@ -132,7 +132,6 @@ body {
 }
 
 .melding-knop {
-    background-color: #ff8b00; /* CTA-kleur */
     color: white;
     border: none;
     padding: 15px 30px; /* Grotere padding voor een opvallende knop */
@@ -143,7 +142,6 @@ body {
 }
 
 .melding-knop:hover {
-    background-color: #e67e22; /* Donkerdere kleur bij hover */
 }
 
 /* Content */
