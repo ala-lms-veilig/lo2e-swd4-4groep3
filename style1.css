@@ -5,16 +5,16 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #f0f4f8; /* Lichte achtergrondkleur */
 }
 
 /* Navigatiebalk */
 nav {
-    background-color: #2E0E4A; /* Donkerblauwe achtergrond */
+    background-color: #2E0E4A;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,12 +22,10 @@ nav {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 1000; /* Zorg ervoor dat het bovenop andere elementen blijft */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Schaduw onder de navigatie */
 }
 
 .logo {
-    font-size: 28px; /* Grotere logo */
+    font-size: 24px;
     font-weight: bold;
     color: white;
 }
@@ -39,17 +37,82 @@ nav {
 }
 
 .nav-links li a {
-    background-color: #ec4a67; /* Hoofdkleur voor knoppen */
     color: white;
-    padding: 10px 20px;
     text-decoration: none;
     font-size: 16px;
+    padding: 10px 20px;
+    background-color: #ec4a67;
     border-radius: 4px;
-    transition: background-color 0.3s ease; /* Mooie overgang bij hover */
 }
 
-.nav-links li a:hover {
-    background-color: #ff8b00; /* Hover kleur */
+
+.cta {
+    background-color: #ff8b00;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Voor het normale navigatiemenu */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+/* Hamburger-icoon styling */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+}
+
+/* Verberg de navigatielinks op kleinere schermen */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #2E0E4A;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .nav-links li {
+        margin: 15px 0;
+    }
+
+    /* Toon de hamburger op mobiele schermen */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Als het menu actief is */
+    .nav-active {
+        display: flex;
+    }
 }
 
 /* Header sectie */

@@ -4,30 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Melding Maken</title>
+    <script defer src="hamburger.js"></script>
     <style>
         /* Reset standaard marges en padding */
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        /* Zorg ervoor dat html en body de volledige breedte en hoogte benutten */
-        html, body {
-            width: 100%;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f4f4f4;
-        }
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Navigatiebalk */
+/* Navigatiebalk */
 nav {
     background-color: #2E0E4A;
     display: flex;
@@ -58,6 +52,76 @@ nav {
     padding: 10px 20px;
     background-color: #ec4a67;
     border-radius: 4px;
+}
+
+
+.cta {
+    background-color: #ff8b00;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Voor het normale navigatiemenu */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+/* Hamburger-icoon styling */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+}
+
+/* Verberg de navigatielinks op kleinere schermen */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #2E0E4A;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .nav-links li {
+        margin: 15px 0;
+    }
+
+    /* Toon de hamburger op mobiele schermen */
+    .hamburger {
+        display: flex;
+    }
+
+    /* Als het menu actief is */
+    .nav-active {
+        display: flex;
+    }
 }
 
         .auth-buttons {
@@ -174,6 +238,11 @@ footer {
                 <li><a href="melding_maken.html">MELDING MAKEN</a></li>
             </ul>
             <div class="auth-buttons">
+                <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
                 <span id="welcomeMessage">Welkom!</span>
                 <button id="logoutButton">Uitloggen</button>
             </div>
