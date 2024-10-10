@@ -31,50 +31,38 @@
                 <p>In de <a href="#">schoolvakanties</a> zijn wij op werkdagen telefonisch en per e-mail bereikbaar tussen 10.00 – 16.00 uur.</p><br>
                 <p>Belt u vanuit een bedrijf en heeft u een vraag of klacht? Neemt u dan contact op met Connect via <a href="mailto:connect@mborijnland.nl">connect@mborijnland.nl</a>.</p><br><br>
             </div>
-    
-        <form action="submit_form.php" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-        
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-        
-            <button type="submit">Send Message</button>
-        </form>
-    
 
-        <div class="locations">
-            
+            <!-- Contact Form -->
+            <form id="contactForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
 
-            <div class="address">
-                <h3>Bureau Bestuur en Diensten</h3>
-                <p>Bezoekadres: Bètaplein 18, 2321 KS Leiden</p>
-                <p>Postadres: Postbus 1317, 2302 BH Leiden</p>
-                <p>Factuuradres: Groen van Prinsterersingel 52, 2805 TE Gouda</p>
-                <p>Tel.: 088 222 17 77</p>
-                <p>Fax: 0182 53 91 38</p>
-                <p>KvK: 41159510</p>
-                <p>BTW nr: NL804490946B01</p>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+
+            <p id="responseMessage"></p>
+
+            <!-- Modal for success message -->
+            <div id="successModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <p>Bedankt voor je bericht! We nemen snel contact met je op.</p>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <aside class="sidebar">
-        <div class="meldpunt">
-            <h3>Digitaal meldpunt mboRijnland</h3>
-            <p>We doen ons best om goed onderwijs te geven. Toch kan het gebeuren dat er iets mis gaat. We proberen dan altijd een oplossing voor jouw situatie te vinden.</p>
-            <button>Naar het meldpunt</button>
-        </div>
-    </aside>
+        </section>
+    </div>
 
-    
-</div>
+    <footer>
+        <p>&copy; 2024 mborijnland</p>
+    </footer>
 
-<footer>
-    <p>&copy; 2024 mborijnland</p>
-</footer>
+    <script src="script.js"></script>
 </body>
 </html>
