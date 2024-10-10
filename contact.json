@@ -1,0 +1,27 @@
+{
+    "pageTitle": "Contact - mboRijnland",
+    "contactInfo": {
+      "title": "Heb je een vraag?",
+      "description": "Het antwoord op de meeste vragen vind je op deze website. Heb je toch nog vragen? Neem dan contact met ons op:",
+      "phone": "088 222 17 77",
+      "email": "info@mborijnland.nl",
+      "holidays": "In de schoolvakanties zijn wij op werkdagen telefonisch en per e-mail bereikbaar tussen 10.00 – 16.00 uur.",
+      "businessContact": {
+        "title": "Belt u vanuit een bedrijf en heeft u een vraag of klacht?",
+        "email": "connect@mborijnland.nl"
+      }
+    },
+    "locations": [
+      {
+        "name": "Bureau Bestuur en Diensten",
+        "visitAddress": "Bètaplein 18, 2321 KS Leiden",
+        "postAddress": "Postbus 1317, 2302 BH Leiden",
+        "invoiceAddress": "Groen van Prinsterersingel 52, 2805 TE Gouda",
+        "phone": "088 222 17 77",
+        "fax": "0182 53 91 38",
+        "kvk": "41159510",
+        "vat": "NL804490946B01"
+      }
+    ]
+  }
+  
