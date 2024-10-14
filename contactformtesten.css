@@ -59,7 +59,7 @@ nav {
 }
 
 .nav-links li a:hover {
-    background-color: #ff8b00;
+    background-color: #ec4a67;
 }
 
 /* Hamburger-icoon styling */
@@ -158,7 +158,7 @@ input, textarea {
 
 button {
     padding: 10px;
-    background-color: #8d31b3;
+    background-color: #ec4a67;
     color: white;
     border: none;
     border-radius: 5px;
@@ -166,7 +166,7 @@ button {
 }
 
 button:hover {
-    background-color: #722895;
+    background-color: #ec4a67;
 }
 
 /* Sidebar Styling */
@@ -204,7 +204,7 @@ button:hover {
 
 /* Footer */
 footer {
-    background-color: #8d31b3;
+    background-color: #2E0E4A;
     text-align: center;
     padding: 20px 0;
     margin-top: auto;
