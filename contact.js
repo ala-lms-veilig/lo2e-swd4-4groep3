@@ -44,6 +44,13 @@ class ContactPage {
         `;
         locationsContainer.appendChild(locationElement);
       });
+
+      document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Voorkomt standaard versturen
+      alert('De form is succesvol gesubmit');
+    });
+
+
     }
   }
   

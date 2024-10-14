@@ -48,7 +48,7 @@
             <label for="message">Message:</label>
             <textarea id="message" name="message" rows="4" required></textarea>
     
-            <button type="submit">Send Message</button>
+            <button id="submitform" type="submit">Send Message</button>
         </form>
 
 <p id="responseMessage"></p>
@@ -82,22 +82,18 @@
     
 </div>
 
-<div id="successModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <p>Bedankt voor je bericht! We nemen snel contact met je op.</p>
-    </div>
-<<<<<<< HEAD
-</div>
 
-=======
-
-    
-=======
->>>>>>> b8119bcf2a24e9ba75d0ce5c64a1b19815be2af3
 </div>
 <footer>
     <p>&copy; 2024 mborijnland</p>
 </footer>
+
+<script>
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Voorkomt standaard versturen
+      alert('De form is succesvol gesubmit');
+    });
+  </script>
+  
 </body>
 </html>
