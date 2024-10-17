@@ -84,38 +84,34 @@
         <p><a href="change_password.html">Wachtwoord vergeten?</a></p>
         <p id="message" class="error-message"></p>
 
-        <!-- Toegevoegde knop voor registratie -->
         <button class="register-btn" onclick="window.location.href='register.html'">Registreren</button>
     </div>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();  // Voorkom dat de pagina herlaadt
+            event.preventDefault();  
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Haal gebruiker op uit localStorage
             const opgeslagenGebruiker = localStorage.getItem(email);
 
-            // Als de gebruiker niet bestaat
             if (!opgeslagenGebruiker) {
                 document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
                 return;
             }
 
-            // Parseer de opgeslagen gebruiker om het wachtwoord en rol te controleren
             const gebruiker = JSON.parse(opgeslagenGebruiker);
 
-            // Controleer wachtwoord
+            
             if (gebruiker.wachtwoord === password) {
-                // Gebruiker is succesvol ingelogd, sla gegevens op in localStorage
+                
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
-                localStorage.setItem('userName', gebruiker.gebruikersnaam);  // Gebruik 'gebruikersnaam' in plaats van 'username'
+                localStorage.setItem('userName', gebruiker.gebruikersnaam);  
                 localStorage.setItem('userRole', gebruiker.rol);
 
-                // Redirect op basis van de rol
+               
                 if (gebruiker.rol === 'docent') {
                     window.location.href = 'index.html';
                 } else if (gebruiker.rol === 'leerling') {
@@ -128,7 +124,7 @@
                     document.getElementById('message').innerText = "Onbekende rol. Neem contact op met de beheerder.";
                 }
             } else {
-                // Ongeldig wachtwoord
+
                 document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
             }
         });
