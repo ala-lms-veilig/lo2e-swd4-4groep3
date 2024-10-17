@@ -8,7 +8,6 @@
     <script defer src="hamburger.js"></script>
 </head>
 <body>
-    <!-- Navigatiebalk -->
     <nav>
         <div class="logo">Veiligheid & Meldingen</div>
         <ul class="nav-links">
@@ -31,7 +30,6 @@
         </div>
 
         <div class="content">
-            <!-- Informatie aan de linkerkant -->
             <div class="informatie-container">
                 <div class="informatie-box" id="info1">
                     <h3>Vertrouwenspersonen</h3>
@@ -48,45 +46,38 @@
                 </div>
             </div>
 
-            <!-- Foto aan de rechterkant -->
             <div class="foto-box">
                 <img src="image/Veiligheid .png" alt="Team Security logo">
                 <img src="image/inclusie.png" alt="Team Security logo">
             </div>
         </div>
     </div>
-    <!-- Lightbox overlay (verborgen tot klik) -->
 <div id="lightbox" class="lightbox">
     <span class="close">&times;</span>
     <img class="lightbox-content" id="lightbox-img">
 </div>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Veiligheid & Meldingen - Alle rechten voorbehouden</p>
     </footer>
 </body>
 </html>
 <script>
-    // Selecteer de lightbox-elementen
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const closeBtn = document.querySelector('.close');
 
-    // Voeg een klikgebeurtenis toe aan elke afbeelding
     document.querySelectorAll('.foto-box img').forEach(img => {
         img.addEventListener('click', function() {
-            lightbox.style.display = 'flex'; // Laat de lightbox zien
-            lightboxImg.src = this.src; // Toon de geklikte afbeelding in de lightbox
+            lightbox.style.display = 'flex'; 
+            lightboxImg.src = this.src; 
         });
     });
 
-    // Sluit de lightbox wanneer op de sluitknop wordt geklikt
     closeBtn.addEventListener('click', function() {
         lightbox.style.display = 'none'; // Verberg de lightbox
     });
 
-    // Sluit de lightbox wanneer buiten de afbeelding wordt geklikt
     lightbox.addEventListener('click', function(e) {
         if (e.target === lightbox) {
             lightbox.style.display = 'none'; // Verberg de lightbox
