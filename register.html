@@ -97,31 +97,26 @@
             const password = document.getElementById('password').value;
             const role = document.getElementById('role').value;
 
-            // Controleer of de gebruiker al bestaat op basis van het e-mailadres
             const bestaandeGebruiker = localStorage.getItem(email);
 
             if (bestaandeGebruiker) {
                 document.getElementById('message').innerText = "Dit e-mailadres is al geregistreerd. Gebruik een ander e-mailadres.";
             } else {
-                // Maak een nieuw object voor de gebruiker
+
                 const nieuweGebruiker = {
                     gebruikersnaam: username,
                     wachtwoord: password,
                     rol: role
                 };
 
-                // Sla de gebruiker op in localStorage
                 localStorage.setItem(email, JSON.stringify(nieuweGebruiker));
 
-                // Sla ook de gebruikersnaam en rol op in localStorage voor gebruik op andere pagina's
                 localStorage.setItem('userName', username);
                 localStorage.setItem('userRole', role);
                 localStorage.setItem('isLoggedIn', 'true');
 
-                // Geef een succesbericht en verwijs door naar de loginpagina
                 document.getElementById('message').innerHTML = "Registratie succesvol! Je wordt doorgestuurd naar de loginpagina.";
 
-                // Reset het formulier na registratie
                 document.getElementById('registerForm').reset();
 
                 // Verwijs na 2 seconden naar de loginpagina
