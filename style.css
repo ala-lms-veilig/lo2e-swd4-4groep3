@@ -58,14 +58,14 @@ body {
     min-height: 100vh;
 }
 
-/* Voor het normale navigatiemenu */
+
 .nav-links {
     list-style: none;
     display: flex;
     gap: 20px;
 }
 
-/* Hamburger-icoon styling */
+
 .hamburger {
     display: none;
     flex-direction: column;
@@ -81,7 +81,7 @@ body {
     background-color: white;
 }
 
-/* Verberg de navigatielinks op kleinere schermen */
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -99,15 +99,16 @@ body {
         margin: 15px 0;
     }
 
-    /* Toon de hamburger op mobiele schermen */
+ 
     .hamburger {
         display: flex;
     }
 
-    /* Als het menu actief is */
+
     .nav-active {
         display: flex;
     }
+  
 }
 
 
@@ -115,7 +116,6 @@ body {
     background-color: #ff8b00;
 }
 
-/* Hero-sectie */
 .hero {
     display: flex;
     flex-direction: column;
@@ -154,7 +154,7 @@ body {
     border-radius: 5px;
 }
 
-/* Meldingen sectie */
+
 .meldingen {
     padding: 50px 20px;
     background-color: #f9f9f9;
@@ -186,7 +186,7 @@ body {
     transform: translateY(-10px);
 }
 
-/* Voordelen sectie */
+
 .voordelen {
     padding: 50px 20px;
     background-color: #2c3e50;
@@ -212,7 +212,7 @@ body {
     text-align: center;
 }
 
-/* Testimonials sectie */
+
 .testimonials {
     padding: 50px 20px;
     background-color: #34495e;
@@ -238,15 +238,10 @@ body {
     font-style: italic;
 }
 
-/* Footer */
-footer {
-    background-color: #2E0E4A;
-    padding: 20px;
-    text-align: center;
-    color: white;
-}
 
-/* Media queries voor verschillende schermformaten */
+
+
+
 @media (min-width: 768px) {
     .hero {
         flex-direction: row;
@@ -269,7 +264,7 @@ footer {
 
 
 
-/* Hero-sectie */
+
 .hero {
     display: flex;
     justify-content: space-between;
@@ -312,7 +307,7 @@ footer {
     border-radius: 10px;
 }
 
-/* Meldingen sectie */
+
 .meldingen {
     padding: 50px;
     background-color: #f9f9f9;
@@ -343,7 +338,7 @@ footer {
     transform: translateY(-10px);
 }
 
-/* Voordelen sectie */
+
 .voordelen {
     padding: 50px;
     background-color: #2c3e50;
@@ -366,7 +361,7 @@ footer {
     text-align: center;
 }
 
-/* Testimonials sectie */
+
 .testimonials {
     padding: 50px;
     background-color: #34495e;
@@ -390,7 +385,7 @@ footer {
     font-style: italic;
 }
 
-/* Footer */
+
 footer {
     background-color: #2E0E4A;
     padding: 20px;

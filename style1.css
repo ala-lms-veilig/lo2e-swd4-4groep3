@@ -12,7 +12,7 @@ body {
     min-height: 100vh;
 }
 
-/* Navigatiebalk */
+
 nav {
     background-color: #2E0E4A;
     display: flex;
@@ -49,11 +49,6 @@ nav {
 .cta {
     background-color: #ff8b00;
 }
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
 body {
     font-family: Arial, sans-serif;
@@ -63,14 +58,14 @@ body {
     min-height: 100vh;
 }
 
-/* Voor het normale navigatiemenu */
+
 .nav-links {
     list-style: none;
     display: flex;
     gap: 20px;
 }
 
-/* Hamburger-icoon styling */
+
 .hamburger {
     display: none;
     flex-direction: column;
@@ -86,7 +81,7 @@ body {
     background-color: white;
 }
 
-/* Verberg de navigatielinks op kleinere schermen */
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -104,51 +99,50 @@ body {
         margin: 15px 0;
     }
 
-    /* Toon de hamburger op mobiele schermen */
+    
     .hamburger {
         display: flex;
     }
 
-    /* Als het menu actief is */
+   
     .nav-active {
         display: flex;
     }
 }
 
-/* Header sectie */
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 150px 50px; /* Verhoogd padding voor meer ademruimte */
-    background-color: #2c3e50; /* Achtergrondkleur voor de header */
+    padding: 150px 50px; 
+    background-color: #2c3e50; 
     color: white;
     text-align: center;
 }
 
 .header h1 {
     font-size: 2.8em;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Schaduw voor tekst */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
 }
 
 .melding-knop {
     color: white;
     border: none;
-    padding: 15px 30px; /* Grotere padding voor een opvallende knop */
+    padding: 15px 30px; 
     cursor: pointer;
     border-radius: 5px;
     font-size: 16px;
-    transition: background-color 0.3s ease; /* Overgang bij hover */
+    transition: background-color 0.3s ease; 
 }
 
 
 
-/* Content */
 .container {
-    width: 100%; /* Zorg dat de container de volledige breedte inneemt */
-    max-width: 1700px; /* Vergroot de maximale breedte van de container */
+    width: 100%; 
+    max-width: 1700px; 
     margin: 0 auto;
-    padding-top: 100px; /* Zorg ervoor dat de content niet onder de navigatie valt */
+    padding-top: 100px; 
 }
 
 .content {
@@ -156,39 +150,39 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     padding: 20px;
-    gap: 30px; /* Verhoog de ruimte tussen de tekst en foto's */
+    gap: 30px; 
 }
 
-/* Informatie kolom links */
+
 .informatie-container {
-    width: 50%; /* Geef de tekstkolom meer ruimte */
+    width: 50%; 
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Ruimte tussen informatie-boxen */
+    gap: 20px; 
 }
 
 .informatie-box {
-    background-color: white; /* Achtergrondkleur voor informatie-boxen */
+    background-color: white; 
     padding: 30px;
     border-radius: 9px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schaduw effect voor boxen */
-    transition: transform 0.3s ease; /* Overgang voor hover effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.3s ease; 
 }
 
 .informatie-box:hover {
-    transform: translateY(-5px); /* Lichte beweging bij hover */
+    transform: translateY(-5px); 
 }
 
-/* Lightbox overlay */
+
 .lightbox {
-    display: none; /* Verborgen standaard */
-    position: fixed; /* Overlay over het hele scherm */
-    z-index: 1000; /* Bovenop andere elementen */
+    display: none; 
+    position: fixed;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Donkere achtergrond */
+    background-color: rgba(0, 0, 0, 0.8); 
     justify-content: center;
     align-items: center;
 }
@@ -210,19 +204,19 @@ body {
 }
 
 .foto-box {
-    width: 50%; /* Zorg ervoor dat de foto-box de overige ruimte inneemt */
+    width: 50%; 
     display: flex;
     justify-content: space-around;
     gap: 50px;
 }
 
 .foto-box img {
-    max-width: 50%; /* Zorg ervoor dat de afbeeldingen binnen hun container passen */
+    max-width: 50%;   
     height: auto;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer; /* Cursor verandert in pointer bij hover */
+    cursor: pointer; 
 }
 
 .foto-box img:hover {
@@ -231,15 +225,15 @@ body {
 }
 
 
-/* Hover-effect: Vergroot de afbeelding */
+
 .foto-box img:hover {
-    transform: scale(1.1); /* Vergroot de afbeelding met 10% */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Versterkt de schaduw bij hover */
+    transform: scale(1.1); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
 }
 
-/* Footer */
+
 footer {
-    background-color: #2E0E4A; /* Donkerblauwe achtergrond */
+    background-color: #2E0E4A; 
     text-align: center;
     padding: 20px 0;
     margin-top: auto;
@@ -247,7 +241,7 @@ footer {
 }
 
 footer p {
-    color: white; /* Witte tekst voor footer */
+    color: white;
     font-size: 18px;
 }
 
