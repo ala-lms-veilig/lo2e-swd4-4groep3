@@ -48,7 +48,7 @@
     <button id="logoutButton">Uitloggen</button>
 
     <script>
-        // Controleer of de gebruiker is ingelogd als beheerder
+    
         document.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('userRole') !== 'beheerder') {
                 alert('Toegang geweigerd: Alleen beheerders mogen dit dashboard bekijken.');
@@ -56,7 +56,7 @@
             }
         });
 
-        // Functie om meldingen te tellen per categorie
+        
         function telMeldingenPerCategorie(meldingen) {
             const telling = {};
 
@@ -70,12 +70,12 @@
             return telling;
         }
 
-        // Functie om meldingen op te halen uit localStorage
+        
         function haalMeldingenOp() {
             return JSON.parse(localStorage.getItem('meldingen')) || [];
         }
 
-        // Functie om de chart te updaten
+        
         function updateChart(chart) {
             const meldingen = haalMeldingenOp();
             const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
@@ -85,15 +85,15 @@
             chart.update();
         }
 
-        // Data voor de chart initialiseren
+     
         const ctx = document.getElementById('meldingChart').getContext('2d');
         const meldingChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: [], // Wordt later gevuld met categorieën
+                labels: [], 
                 datasets: [{
                     label: 'Aantal meldingen',
-                    data: [], // Wordt later gevuld met tellingen
+                    data: [], 
                     backgroundColor: [
                         '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
                         '#9966FF', '#FF9F40', '#E7E9ED'
@@ -114,15 +114,15 @@
             }
         });
 
-        // Chart updaten bij pagina load
+        
         updateChart(meldingChart);
 
-        // Stel een interval in om de chart elke 10 seconden te updaten
+       
         setInterval(function() {
             updateChart(meldingChart);
-        }, 10000);  // Update elke 10 seconden
+        }, 10000);  
 
-        // Uitloggen knop
+       
         document.getElementById('logoutButton').addEventListener('click', function () {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userEmail');
