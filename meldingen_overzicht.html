@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meldingen Overzicht</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
         .container {
             display: flex;
             justify-content: space-between;
@@ -33,7 +28,7 @@
         .kolommen-container {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            margin-top: 60px;
         }
         .kolom {
             flex: 1;
@@ -50,43 +45,64 @@
             opacity: 0.5;
         }
 
-    nav {
-    background-color: #2E0E4A;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 50px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-}
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
+        nav {
+            background-color: #2E0E4A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+        }
 
-.nav-links li a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 10px 20px;
-    background-color: #ec4a67;
-    border-radius: 4px;
-}
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
 
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #ec4a67;
+            border-radius: 4px;
+        }
+
+        #logoutButton {
+            background-color: #f5515f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #logoutButton:hover {
+            background-color: #d9404d;
+        }
     </style>
 </head>
 <body>
@@ -107,7 +123,7 @@
             <span></span>
             <span></span>
         </div>
-                
+            
             </div>
         </nav>
     </header>
@@ -124,9 +140,13 @@
     </div>
 
     <script>
-        function openMeldingForm() {
-            window.open('melding_maken.html', 'MeldingForm', 'width=600,height=400');
-        }
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole'); 
+            window.location.href = 'login.html';
+        });
 
         function laadMeldingen() {
             const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
