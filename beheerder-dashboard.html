@@ -60,11 +60,21 @@
     <button id="logoutButton">Uitloggen</button>
 
     <script>
+<<<<<<< HEAD
         
         if (localStorage.getItem('userRole') !== 'beheerder') {
             alert('Toegang geweigerd: Alleen beheerders mogen dit dashboard bekijken.');
             window.location.href = 'login.html';
         }
+=======
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('userRole') !== 'beheerder') {
+                alert('Toegang geweigerd: Alleen beheerders mogen dit dashboard bekijken.');
+                window.location.href = 'login.html';
+            }
+        });
+>>>>>>> 34f4e8d2f950e6784948a18d4974ce10db4966d2
 
         
         function telMeldingenPerCategorie(meldingen) {
@@ -81,24 +91,46 @@
         }
 
         
+<<<<<<< HEAD
         const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
 
         
         const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
+=======
+        function haalMeldingenOp() {
+            return JSON.parse(localStorage.getItem('meldingen')) || [];
+        }
+
+        
+        function updateChart(chart) {
+            const meldingen = haalMeldingenOp();
+            const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
+>>>>>>> 34f4e8d2f950e6784948a18d4974ce10db4966d2
 
         
         const categorieën = Object.keys(tellingPerCategorie);
         const tellingen = Object.values(tellingPerCategorie);
 
+<<<<<<< HEAD
         
+=======
+     
+>>>>>>> 34f4e8d2f950e6784948a18d4974ce10db4966d2
         const ctx = document.getElementById('meldingChart').getContext('2d');
         const meldingChart = new Chart(ctx, {
             type: 'pie',
             data: {
+<<<<<<< HEAD
                 labels: categorieën,
                 datasets: [{
                     label: 'Aantal meldingen',
                     data: tellingen,
+=======
+                labels: [], 
+                datasets: [{
+                    label: 'Aantal meldingen',
+                    data: [], 
+>>>>>>> 34f4e8d2f950e6784948a18d4974ce10db4966d2
                     backgroundColor: [
                         '#FF6384',
                         '#36A2EB',
@@ -130,6 +162,17 @@
         });
 
         
+<<<<<<< HEAD
+=======
+        updateChart(meldingChart);
+
+       
+        setInterval(function() {
+            updateChart(meldingChart);
+        }, 10000);  
+
+       
+>>>>>>> 34f4e8d2f950e6784948a18d4974ce10db4966d2
         document.getElementById('logoutButton').addEventListener('click', function () {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userEmail');
