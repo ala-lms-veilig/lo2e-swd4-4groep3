@@ -7,115 +7,54 @@
     <script defer src="hamburger.js"></script>
     <style>
         * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-nav {
-    background-color: #2E0E4A;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 50px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-}
+        nav {
+            background-color: #2E0E4A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+        }
 
-.logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-}
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
 
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
 
-.nav-links li a {
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 10px 20px;
-    background-color: #ec4a67;
-    border-radius: 4px;
-}
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #ec4a67;
+            border-radius: 4px;
+        }
 
-
-.cta {
-    background-color: #ff8b00;
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    cursor: pointer;
-}
-
-.hamburger span {
-    width: 100%;
-    height: 3px;
-    background-color: white;
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        background-color: #2E0E4A;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        width: 100%;
-        text-align: center;
-        padding: 20px 0;
-    }
-
-    .nav-links li {
-        margin: 15px 0;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
-    .nav-active {
-        display: flex;
-    }
-}
+        .cta {
+            background-color: #ff8b00;
+        }
 
         .auth-buttons {
             display: flex;
@@ -135,6 +74,20 @@ body {
 
         #logoutButton:hover {
             background-color: #d9404d;
+        }
+
+        #beheerderLink {
+            display: none; /* Verberg de beheerder-knop standaard */
+            background-color: #4CAF50; /* Groene achtergrond */
+            color: white; /* Witte tekst */
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #beheerderLink:hover {
+            background-color: #45a049; /* Donkerder groen bij hover */
         }
 
         main {
@@ -195,12 +148,12 @@ body {
             background-color: #d9404d;
         }
 
-footer {
-    background-color: #2E0E4A;
-    padding: 20px;
-    text-align: center;
-    color: white;
-}
+        footer {
+            background-color: #2E0E4A;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
 
         footer p {
             color: white;
@@ -226,17 +179,18 @@ footer {
                 <li><a href="index.html">HOME</a></li>
                 <li><a href="informatie.html">INFORMATIE</a></li>
                 <li><a href="contact.html">CONTACT</a></li>
-                <li><a href="melding_maken.html">MELDING MAKEN</a></li>
+                <li><a href="#">MELDING MAKEN</a></li>
+                <li><a href="meldingen_overzicht.html">OVERZICHT</a></li>
             </ul>
             <div class="auth-buttons">
                 <span id="welcomeMessage">Welkom!</span>
                 <button id="logoutButton">Uitloggen</button>
+                <button id="beheerderLink" onclick="location.href='beheerder-dashboard.html'">Beheerder Dashboard</button>
                 <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-                
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </nav>
     </header>
@@ -296,6 +250,7 @@ footer {
     </footer>
 
     <script>
+        
         if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.location.href = 'login.html'; 
         }
@@ -304,6 +259,11 @@ footer {
         const userRole = localStorage.getItem('userRole') || 'Onbekende rol'; 
         document.getElementById('naam').value = userName;
         document.getElementById('rol').value = userRole;
+
+        
+        if (userRole.toLowerCase() === 'beheerder') {
+            document.getElementById('beheerderLink').style.display = 'block'; 
+        }
 
         document.getElementById('logoutButton').addEventListener('click', function () {
             localStorage.removeItem('isLoggedIn');
@@ -357,14 +317,10 @@ footer {
             };
 
             let meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
-
-
             meldingen.push(nieuweMelding);
-
             localStorage.setItem('meldingen', JSON.stringify(meldingen));
 
             alert('Melding succesvol opgeslagen!');
-
 
             document.getElementById('meldingForm').reset();
             document.getElementById('naam').value = userName; 
