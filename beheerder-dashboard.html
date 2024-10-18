@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beheerder Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .chart-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #logoutButton {
+            background-color: #f5515f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+
+        #logoutButton:hover {
+            background-color: #d9404d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Meldingen per Categorie</h1>
+
+    <div class="chart-container">
+        <canvas id="meldingChart"></canvas>
+    </div>
+
+    <button id="logoutButton">Uitloggen</button>
+
+    <script>
+        // Controleer of de gebruiker is ingelogd als beheerder
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('userRole') !== 'beheerder') {
+                alert('Toegang geweigerd: Alleen beheerders mogen dit dashboard bekijken.');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Functie om meldingen te tellen per categorie
+        function telMeldingenPerCategorie(meldingen) {
+            const telling = {};
+
+            meldingen.forEach(melding => {
+                if (!telling[melding.categorie]) {
+                    telling[melding.categorie] = 0;
+                }
+                telling[melding.categorie]++;
+            });
+
+            return telling;
+        }
+
+        // Functie om meldingen op te halen uit localStorage
+        function haalMeldingenOp() {
+            return JSON.parse(localStorage.getItem('meldingen')) || [];
+        }
+
+        // Functie om de chart te updaten
+        function updateChart(chart) {
+            const meldingen = haalMeldingenOp();
+            const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
+
+            chart.data.labels = Object.keys(tellingPerCategorie);
+            chart.data.datasets[0].data = Object.values(tellingPerCategorie);
+            chart.update();
+        }
+
+        // Data voor de chart initialiseren
+        const ctx = document.getElementById('meldingChart').getContext('2d');
+        const meldingChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [], // Wordt later gevuld met categorieën
+                datasets: [{
+                    label: 'Aantal meldingen',
+                    data: [], // Wordt later gevuld met tellingen
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#E7E9ED'
+                    ],
+                    hoverBackgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+                        '#9966FF', '#FF9F40', '#E7E9ED'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Chart updaten bij pagina load
+        updateChart(meldingChart);
+
+        // Stel een interval in om de chart elke 10 seconden te updaten
+        setInterval(function() {
+            updateChart(meldingChart);
+        }, 10000);  // Update elke 10 seconden
+
+        // Uitloggen knop
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>
