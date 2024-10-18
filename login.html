@@ -88,33 +88,30 @@
     </div>
 
     <script>
-        // Check of de gebruiker al is ingelogd bij het laden van de pagina
+        
         document.addEventListener('DOMContentLoaded', function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             const userRole = localStorage.getItem('userRole');
 
             if (isLoggedIn === 'true') {
-                // Stuur door naar de juiste pagina op basis van de rol
                 if (userRole === 'beheerder') {
-                    window.location.href = 'beheerder_dashboard.html';
+                    window.location.href = 'index.html';
                 } else if (userRole === 'docent') {
                     window.location.href = 'index.html';
                 } else if (userRole === 'leerling') {
-                    window.location.href = 'leerling_dashboard.html';
+                    window.location.href = 'index.html';
                 } else if (userRole === 'beveiliger') {
-                    window.location.href = 'beveiliger_dashboard.html';
+                    window.location.href = 'index.html';
                 }
             }
         });
 
-        // Login functionaliteit
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();  
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Haal de gebruiker op uit localStorage
             const opgeslagenGebruiker = localStorage.getItem(email);
 
             if (!opgeslagenGebruiker) {
@@ -124,15 +121,12 @@
 
             const gebruiker = JSON.parse(opgeslagenGebruiker);
 
-            // Controleer wachtwoord
             if (gebruiker.wachtwoord === password) {
-                // Gebruiker is succesvol ingelogd, sla gegevens op in localStorage
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
                 localStorage.setItem('userName', gebruiker.gebruikersnaam);  
                 localStorage.setItem('userRole', gebruiker.rol);
 
-                // Redirect op basis van de rol
                 if (gebruiker.rol === 'docent') {
                     window.location.href = 'index.html';
                 } else if (gebruiker.rol === 'leerling') {
@@ -140,12 +134,11 @@
                 } else if (gebruiker.rol === 'beveiliger') {
                     window.location.href = 'index.html';
                 } else if (gebruiker.rol === 'beheerder') {
-                    window.location.href = 'beheerder_dashboard.html';
+                    window.location.href = 'index.html'; 
                 } else {
                     document.getElementById('message').innerText = "Onbekende rol. Neem contact op met de beheerder.";
                 }
             } else {
-                // Ongeldig wachtwoord
                 document.getElementById('message').innerText = "Ongeldig e-mailadres of wachtwoord.";
             }
         });

@@ -102,7 +102,6 @@
             if (bestaandeGebruiker) {
                 document.getElementById('message').innerText = "Dit e-mailadres is al geregistreerd. Gebruik een ander e-mailadres.";
             } else {
-
                 const nieuweGebruiker = {
                     gebruikersnaam: username,
                     wachtwoord: password,
@@ -113,7 +112,7 @@
 
                 localStorage.setItem('userName', username);
                 localStorage.setItem('userRole', role);
-                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('isLoggedIn', 'true'); 
 
                 document.getElementById('message').innerHTML = "Registratie succesvol! Je wordt doorgestuurd naar de loginpagina.";
 

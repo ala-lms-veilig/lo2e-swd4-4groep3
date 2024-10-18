@@ -22,8 +22,8 @@
             margin: 0 auto;
         }
 
-        #logoutButton {
-            background-color: #f5515f;
+        #homeButton, #logoutButton {
+            background-color: #4CAF50; 
             color: white;
             padding: 10px 15px;
             border: none;
@@ -31,10 +31,20 @@
             cursor: pointer;
             display: block;
             margin: 20px auto;
+            text-align: center; 
+            width: 200px; 
+        }
+
+        #homeButton:hover, #logoutButton:hover {
+            background-color: #45a049; 
+        }
+
+        #logoutButton {
+            background-color: #f5515f; 
         }
 
         #logoutButton:hover {
-            background-color: #d9404d;
+            background-color: #d9404d; 
         }
     </style>
 </head>
@@ -45,18 +55,18 @@
         <canvas id="meldingChart"></canvas>
     </div>
 
+    
+    <button id="homeButton" onclick="window.location.href='index.html'">Naar Home</button>
     <button id="logoutButton">Uitloggen</button>
 
     <script>
-        // Controleer of de gebruiker is ingelogd als beheerder
-        document.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('userRole') !== 'beheerder') {
-                alert('Toegang geweigerd: Alleen beheerders mogen dit dashboard bekijken.');
-                window.location.href = 'login.html';
-            }
-        });
+        
+        if (localStorage.getItem('userRole') !== 'beheerder') {
+            alert('Toegang geweigerd: Alleen beheerders mogen dit dashboard bekijken.');
+            window.location.href = 'login.html';
+        }
 
-        // Functie om meldingen te tellen per categorie
+        
         function telMeldingenPerCategorie(meldingen) {
             const telling = {};
 
@@ -70,37 +80,42 @@
             return telling;
         }
 
-        // Functie om meldingen op te halen uit localStorage
-        function haalMeldingenOp() {
-            return JSON.parse(localStorage.getItem('meldingen')) || [];
-        }
+        
+        const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
 
-        // Functie om de chart te updaten
-        function updateChart(chart) {
-            const meldingen = haalMeldingenOp();
-            const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
+        
+        const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
 
-            chart.data.labels = Object.keys(tellingPerCategorie);
-            chart.data.datasets[0].data = Object.values(tellingPerCategorie);
-            chart.update();
-        }
+        
+        const categorieën = Object.keys(tellingPerCategorie);
+        const tellingen = Object.values(tellingPerCategorie);
 
-        // Data voor de chart initialiseren
+        
         const ctx = document.getElementById('meldingChart').getContext('2d');
         const meldingChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: [], // Wordt later gevuld met categorieën
+                labels: categorieën,
                 datasets: [{
                     label: 'Aantal meldingen',
-                    data: [], // Wordt later gevuld met tellingen
+                    data: tellingen,
                     backgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                        '#9966FF', '#FF9F40', '#E7E9ED'
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56',
+                        '#4BC0C0',
+                        '#9966FF',
+                        '#FF9F40',
+                        '#E7E9ED'
                     ],
                     hoverBackgroundColor: [
-                        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-                        '#9966FF', '#FF9F40', '#E7E9ED'
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56',
+                        '#4BC0C0',
+                        '#9966FF',
+                        '#FF9F40',
+                        '#E7E9ED'
                     ]
                 }]
             },
@@ -114,15 +129,7 @@
             }
         });
 
-        // Chart updaten bij pagina load
-        updateChart(meldingChart);
-
-        // Stel een interval in om de chart elke 10 seconden te updaten
-        setInterval(function() {
-            updateChart(meldingChart);
-        }, 10000);  // Update elke 10 seconden
-
-        // Uitloggen knop
+        
         document.getElementById('logoutButton').addEventListener('click', function () {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userEmail');
