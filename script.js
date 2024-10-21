@@ -56,19 +56,19 @@ class Auth {
     static login(email) {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('userEmail', email);
-        window.location.href = 'home.html'; // Redirect to home after login
+        window.location.href = 'home.html';
     }
 
     static logout() {
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('userEmail');
-        window.location.href = 'login.html'; // Redirect to login after logout
+        window.location.href = 'login.html'; 
     }
 
     static checkLoginStatus() {
         const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
         if (!isLoggedIn) {
-            window.location.href = 'login.html'; // Redirect to login if not logged in
+            window.location.href = 'login.html'; 
         }
     }
 
@@ -77,9 +77,8 @@ class Auth {
     }
 }
 
-// Wanneer de pagina geladen is, haal meldingen op
 document.addEventListener('DOMContentLoaded', () => {
-    Auth.checkLoginStatus(); // Check login status
+    Auth.checkLoginStatus(); 
 
     const meldingList = new MeldingList('meldingen.json', 'card-container');
     meldingList.displayMeldingen();

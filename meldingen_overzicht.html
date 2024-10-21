@@ -5,118 +5,238 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meldingen Overzicht</title>
     <style>
-
-    body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
+        .container {
+            display: flex;
+            justify-content: space-between;
         }
-
-        h1 {
+        .kolom {
+            flex: 1;
+            margin: 0 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            min-height: 300px;
+        }
+        .melding {
+            background-color: white;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            cursor: move;
+        }
+        .kolommen-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+        .kolom {
+            flex: 1;
+            margin: 0 10px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .kolom h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 20px;
+        }
+        .melding.dragging {
+            opacity: 0.5;
         }
 
-        .melding {
-            background-color: #fff;
-            margin-bottom: 15px;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            cursor: pointer;
-            transition: box-shadow 0.3s ease;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .melding:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        .melding-header {
-            font-weight: bold;
+        nav {
+            background-color: #2E0E4A;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 15px 50px;
+            width: 100%;
+            position: fixed;
+            top: 0;
         }
 
-        .melding-header span {
-            font-size: 14px;
-            color: #666;
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
         }
 
-        .melding-beschrijving {
-            display: none;
-            margin-top: 10px;
-            color: #555;
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
         }
 
-        .melding.open .melding-beschrijving {
-            display: block;
+        .nav-links li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #ec4a67;
+            border-radius: 4px;
         }
 
-        .show-more {
-            font-size: 12px;
-            color: #f5515f;
-            text-decoration: underline;
+        #logoutButton {
+            background-color: #f5515f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
+        }
+
+        #logoutButton:hover {
+            background-color: #d9404d;
         }
     </style>
 </head>
 <body>
-
-    <h1>Meldingen Overzicht</h1>
-
-    <div id="meldingContainer"></div>
+    <header>
+        <nav>
+            <div class="logo">mborijn/land</div>
+            <ul class="nav-links">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="informatie.html">INFORMATIE</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="melding_maken.html">MELDING MAKEN</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <span id="welcomeMessage">Welkom!</span>
+                <button id="logoutButton">Uitloggen</button>
+                <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+            
+            </div>
+        </nav>
+    </header>
+    <div class="kolommen-container">
+        <div class="kolom" id="actief">
+            <h2>Actieve Taken</h2>
+        </div>
+        <div class="kolom" id="bezig">
+            <h2>Bezig</h2>
+        </div>
+        <div class="kolom" id="klaar">
+            <h2>Klaar</h2>
+        </div>
+    </div>
 
     <script>
-        
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-        const userRole = localStorage.getItem('userRole');
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userRole'); 
+            window.location.href = 'login.html';
+        });
 
-        
-        const toegestaneRollen = ['docent', 'beveiliger', 'beheerder'];
+        function laadMeldingen() {
+            const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
+            const actiefKolom = document.getElementById('actief');
+            const bezigKolom = document.getElementById('bezig');
+            const klaarKolom = document.getElementById('klaar');
 
-        
-        if (isLoggedIn !== 'true' || !toegestaneRollen.includes(userRole)) {
-            alert("Je hebt geen toegang tot deze pagina.");
-            window.location.href = 'index.html'; 
-        } else {
-            
-            function laadMeldingen() {
-                const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
-                const container = document.getElementById('meldingContainer');
-                container.innerHTML = ''; 
+            meldingen.forEach(melding => {
+                const meldingElement = createMeldingElement(melding);
+                actiefKolom.appendChild(meldingElement);
+            });
 
-                meldingen.forEach(melding => {
-                    
-                    const meldingElement = document.createElement('div');
-                    meldingElement.classList.add('melding');
-                    
-                    meldingElement.innerHTML = `
-                        <div class="melding-header">
-                            <span>${melding.categorie} - ${melding.locatie}</span>
-                            <span>${melding.datum}</span>
-                        </div>
-                        <div class="melding-beschrijving">
-                            <p>${melding.beschrijving}</p>
-                            <p><strong>Gemeld door:</strong> ${melding.naam}</p>
-                        </div>
-                        <span class="show-more">Toon meer</span>
-                    `;
-
-                    container.appendChild(meldingElement);
-
-                    meldingElement.addEventListener('click', function () {
-                        this.classList.toggle('open');
-                        const showMoreText = this.classList.contains('open') ? 'Toon minder' : 'Toon meer';
-                        this.querySelector('.show-more').innerText = showMoreText;
-                    });
-                });
-            }
-
-            laadMeldingen();
+            implementDragAndDrop();
         }
-    </script>
 
+        function createMeldingElement(melding) {
+            const meldingElement = document.createElement('div');
+            meldingElement.classList.add('melding');
+            meldingElement.draggable = true;
+            meldingElement.id = `melding-${melding.id}`;
+            meldingElement.ondragstart = drag;
+            meldingElement.innerHTML = `
+                <h3>${melding.categorie}</h3>
+                <p>${melding.beschrijving}</p>
+                <p>Locatie: ${melding.locatie} ${melding.specifiekeLocatie}</p>
+                <p>Gemeld door: ${melding.naam} (${melding.rol})</p>
+                <p>Datum: ${melding.datum}</p>
+            `;
+            return meldingElement;
+        }
+
+        function implementDragAndDrop() {
+            const meldingen = document.querySelectorAll('.melding');
+            const kolommen = document.querySelectorAll('.kolom');
+
+            meldingen.forEach(melding => {
+                melding.addEventListener('dragstart', () => {
+                    melding.classList.add('dragging');
+                });
+
+                melding.addEventListener('dragend', () => {
+                    melding.classList.remove('dragging');
+                });
+            });
+
+            kolommen.forEach(kolom => {
+                kolom.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    const draggingMelding = document.querySelector('.dragging');
+                    kolom.appendChild(draggingMelding);
+                });
+            });
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.closest('.kolom').appendChild(document.getElementById(data));
+            
+            // Update de status in localStorage
+            const meldingId = data.split('-')[1];
+            const nieuweStatus = ev.target.closest('.kolom').id;
+            updateMeldingStatus(meldingId, nieuweStatus);
+        }
+
+        function updateMeldingStatus(id, nieuweStatus) {
+            let meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
+            const index = meldingen.findIndex(m => m.id.toString() === id);
+            if (index !== -1) {
+                meldingen[index].status = nieuweStatus;
+                localStorage.setItem('meldingen', JSON.stringify(meldingen));
+            }
+        }
+
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'nieuweMelding') {
+                const nieuweMelding = createMeldingElement(event.data.melding);
+                document.getElementById('actief').appendChild(nieuweMelding);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', laadMeldingen);
+    </script>
 </body>
 </html>
