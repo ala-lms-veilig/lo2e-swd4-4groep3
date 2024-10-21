@@ -84,17 +84,26 @@
 
         
         function haalMeldingenOp() {
-            return JSON.parse(localStorage.getItem('meldingen')) || [];
+            return fetch('dashbord.json')
+                .then(response => response.json())
+                .then(data => data.meldingen)
+                .catch(error => {
+                    console.error('Error:', error);
+                    return [];
+                });
         }
 
         
-        function updateChart(chart) {
-            const meldingen = haalMeldingenOp();
+        async function updateChart(chart) {
+            const meldingen = await haalMeldingenOp();
             const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
 
-        
-        const categorieën = Object.keys(tellingPerCategorie);
-        const tellingen = Object.values(tellingPerCategorie);
+            const categorieën = Object.keys(tellingPerCategorie);
+            const tellingen = Object.values(tellingPerCategorie);
+
+            chart.data.labels = categorieën;
+            chart.data.datasets[0].data = tellingen;
+            chart.update();
         }
 
      
