@@ -84,8 +84,13 @@
 
         
         function haalMeldingenOp() {
-            return fetch('dashbord.json')
-                .then(response => response.json())
+            return fetch('meldingen.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => data.meldingen)
                 .catch(error => {
                     console.error('Error:', error);
@@ -95,15 +100,19 @@
 
         
         async function updateChart(chart) {
-            const meldingen = await haalMeldingenOp();
-            const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
+            try {
+                const meldingen = await haalMeldingenOp();
+                const tellingPerCategorie = telMeldingenPerCategorie(meldingen);
 
-            const categorieën = Object.keys(tellingPerCategorie);
-            const tellingen = Object.values(tellingPerCategorie);
+                const categorieën = Object.keys(tellingPerCategorie);
+                const tellingen = Object.values(tellingPerCategorie);
 
-            chart.data.labels = categorieën;
-            chart.data.datasets[0].data = tellingen;
-            chart.update();
+                chart.data.labels = categorieën;
+                chart.data.datasets[0].data = tellingen;
+                chart.update();
+            } catch (error) {
+                console.error('Error updating chart:', error);
+            }
         }
 
      
@@ -149,9 +158,7 @@
         updateChart(meldingChart);
 
        
-        setInterval(function() {
-            updateChart(meldingChart);
-        }, 10000);  
+        setInterval(() => updateChart(meldingChart), 10000);
 
        
         document.getElementById('logoutButton').addEventListener('click', function () {
