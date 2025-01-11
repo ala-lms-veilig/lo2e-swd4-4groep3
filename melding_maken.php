@@ -1,3 +1,29 @@
+<?php
+session_start();
+include('db.php');
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Verkrijg formulierdata
+    $categorie = $_POST['categorie'];
+    $beschrijving = $_POST['beschrijving'];
+    $locatie = $_POST['locatie'];
+    $specifiekeLocatie = $_POST['specifiekeLocatie'];
+    $naam = $_POST['naam'];
+    $rol = $_POST['rol'];
+    $datum = date('Y-m-d H:i:s');
+
+    // SQL-query om melding op te slaan
+    $sql = "INSERT INTO meldingen (categorie, beschrijving, locatie, specifieke_locatie, naam, rol, datum)
+            VALUES ('$categorie', '$beschrijving', '$locatie', '$specifiekeLocatie', '$naam', '$rol', '$datum')";
+
+    if ($conn->query($sql) === TRUE) {
+        echo "<script>alert('Melding succesvol opgeslagen!');</script>";
+    } else {
+        echo "<script>alert('Fout bij het opslaan van de melding: " . $conn->error . "');</script>";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -77,9 +103,9 @@
         }
 
         #beheerderLink {
-            display: none; /* Verberg de beheerder-knop standaard */
-            background-color: #4CAF50; /* Groene achtergrond */
-            color: white; /* Witte tekst */
+            display: none; 
+            background-color: #4CAF50;
+            color: white;
             padding: 10px 15px;
             border: none;
             border-radius: 4px;
@@ -87,7 +113,7 @@
         }
 
         #beheerderLink:hover {
-            background-color: #45a049; /* Donkerder groen bij hover */
+            background-color: #45a049;
         }
 
         main {
@@ -96,7 +122,7 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 800px;
-            margin: 50px auto; 
+            margin: 50px auto;
         }
 
         h1 {
@@ -122,10 +148,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 100%;
-        }
-
-        textarea {
-            resize: vertical;
         }
 
         .button-group {
@@ -180,7 +202,7 @@
                 <li><a href="informatie.html">INFORMATIE</a></li>
                 <li><a href="contact.html">CONTACT</a></li>
                 <li><a href="#">MELDING MAKEN</a></li>
-                <li><a href="meldingen_overzicht.html">OVERZICHT</a></li>
+                <li><a href="meldingen_overzicht.php">OVERZICHT</a></li>
             </ul>
             <div class="auth-buttons">
                 <span id="welcomeMessage">Welkom!</span>
@@ -197,7 +219,7 @@
 
     <main>
         <h1>Maak een Melding</h1>
-        <form id="meldingForm">
+        <form id="meldingForm" method="POST" action="melding_maken.php">
             <label for="categorie">Type Melding:</label>
             <select name="categorie" id="categorie" required>
                 <option value="">-- Maak een keuze --</option>
@@ -219,114 +241,27 @@
                 <option value="locatie3">Locatie 3</option>
             </select>
 
-            <textarea id="specifiekeLocatie" placeholder="Specifieke locatie (bijv. bij de ingang van de aula)"></textarea>
+            <textarea id="specifiekeLocatie" name="specifiekeLocatie" placeholder="Specifieke locatie (bijv. bij de ingang van de aula)"></textarea>
 
             <label for="beschrijving">Beschrijving incident:</label>
             <textarea name="beschrijving" id="beschrijving" rows="5" required placeholder="Beschrijf het incident zo compleet mogelijk..."></textarea>
 
             <h2>Persoonlijke Gegevens</h2>
 
-            <label for="aanhef">Aanhef:</label>
-            <select name="aanhef" id="aanhef" required>
-                <option value="heer">De heer</option>
-                <option value="mevrouw">Mevrouw</option>
-            </select>
-
             <label for="naam">Naam:</label>
-            <input type="text" id="naam" name="naam" required readonly>
+            <input type="text" id="naam" name="naam" required readonly value="<?php echo $_SESSION['userName']; ?>">
 
             <label for="rol">Rol:</label>
-            <input type="text" id="rol" name="rol" required readonly>
+            <input type="text" id="rol" name="rol" required readonly value="<?php echo $_SESSION['userRole']; ?>">
 
             <div class="button-group">
                 <input type="submit" value="Verzenden">
             </div>
-            <p id="error-message" class="error-message"></p> 
         </form>
     </main>
 
     <footer>
         <p>&copy; 2024 mborijn/land. Alle rechten voorbehouden.</p>
     </footer>
-
-    <script>
-        
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = 'login.html'; 
-        }
-
-        const userName = localStorage.getItem('userName') || 'Gebruiker';
-        const userRole = localStorage.getItem('userRole') || 'Onbekende rol'; 
-        document.getElementById('naam').value = userName;
-        document.getElementById('rol').value = userRole;
-
-        
-        if (userRole.toLowerCase() === 'beheerder') {
-            document.getElementById('beheerderLink').style.display = 'block'; 
-        }
-
-        document.getElementById('logoutButton').addEventListener('click', function () {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userRole'); 
-            window.location.href = 'login.html';
-        });
-
-        document.getElementById('locatie').addEventListener('change', function () {
-            const specifiekeLocatie = document.getElementById('specifiekeLocatie');
-            if (this.value !== "") {
-                specifiekeLocatie.style.display = 'block';
-            } else {
-                specifiekeLocatie.style.display = 'none';
-            }
-        });
-
-        document.getElementById('meldingForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
-
-            const categorie = document.getElementById('categorie').value;
-            const beschrijving = document.getElementById('beschrijving').value;
-            const locatie = document.getElementById('locatie').value;
-            const specifiekeLocatie = document.getElementById('specifiekeLocatie').value;
-            const naam = document.getElementById('naam').value;
-            const rol = document.getElementById('rol').value;
-
-            let errorMessage = "";
-            if (categorie === "") errorMessage += "Kies een categorie. ";
-            if (locatie === "") errorMessage += "Kies een locatie. ";
-            if (locatie !== "" && specifiekeLocatie.trim() === "") errorMessage += "Specificeer de locatie. ";
-            if (beschrijving.trim() === "") errorMessage += "Voer een beschrijving in. ";
-
-            if (errorMessage) {
-                document.getElementById('error-message').innerText = errorMessage;
-                document.getElementById('error-message').style.display = 'block';
-                return; 
-            } else {
-                document.getElementById('error-message').style.display = 'none'; 
-            }
-
-            const nieuweMelding = {
-                categorie,
-                beschrijving,
-                locatie,
-                specifiekeLocatie,
-                naam,
-                rol,
-                datum: new Date().toLocaleString()
-            };
-
-            let meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
-            meldingen.push(nieuweMelding);
-            localStorage.setItem('meldingen', JSON.stringify(meldingen));
-
-            alert('Melding succesvol opgeslagen!');
-
-            document.getElementById('meldingForm').reset();
-            document.getElementById('naam').value = userName; 
-            document.getElementById('rol').value = userRole; 
-            document.getElementById('specifiekeLocatie').style.display = 'none'; 
-        });
-    </script>
 </body>
 </html>
