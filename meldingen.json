@@ -1,40 +1,24 @@
-{
-    "meldingen": [
-      {
-        "categorie": "Geweld",
-        "beschrijving": "Maak melding van geweld.",
-        "url": "https://voorbeeld.com/geweld"
-      },
-      {
-        "categorie": "Geluidsoverlast",
-        "beschrijving": "Maak melding van geluidsoverlast.",
-        "url": "https://voorbeeld.com/geluidsoverlast"
-      },
-      {
-        "categorie": "Diefstal",
-        "beschrijving": "Maak melding van diefstal.",
-        "url": "https://voorbeeld.com/diefstal"
-      },
-      {
-        "categorie": "Technische storingen",
-        "beschrijving": "Maak melding van technische storingen.",
-        "url": "https://voorbeeld.com/technische-storingen"
-      },
-      {
-        "categorie": "Inbraak",
-        "beschrijving": "Maak melding van inbraak.",
-        "url": "https://voorbeeld.com/inbraak"
-      },
-      {
-        "categorie": "Pesten",
-        "beschrijving": "Maak melding van pesten.",
-        "url": "https://voorbeeld.com/pesten"
-      },
-      {
-        "categorie": "Overige",
-        "beschrijving": "Maak melding van overige incidenten.",
-        "url": "https://voorbeeld.com/overige"
-      }
-    ]
+[
+  {
+      "id": 1,
+      "categorie": "Veiligheidsincident",
+      "beschrijving": "Onveilige situatie gemeld bij de hoofdingang.",
+      "locatie": "Gebouw A",
+      "specifiekeLocatie": "Hoofdingang",
+      "naam": "Jan de Vries",
+      "rol": "Medewerker",
+      "datum": "2024-10-10",
+      "status": "actief"
+  },
+  {
+      "id": 2,
+      "categorie": "Diefstal",
+      "beschrijving": "Verdachte activiteit waargenomen in de fietsenstalling.",
+      "locatie": "Gebouw B",
+      "specifiekeLocatie": "Fietsenstalling",
+      "naam": "Lisa Janssen",
+      "rol": "Beveiliger",
+      "datum": "2024-10-12",
+      "status": "bezig"
   }
-  
+]

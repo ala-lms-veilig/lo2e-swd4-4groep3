@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meldingen Overzicht</title>
     <style>
-        .container {
+                .container {
             display: flex;
             justify-content: space-between;
         }
@@ -118,12 +118,6 @@
             <div class="auth-buttons">
                 <span id="welcomeMessage">Welkom!</span>
                 <button id="logoutButton">Uitloggen</button>
-                <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-            
             </div>
         </nav>
     </header>
@@ -140,42 +134,71 @@
     </div>
 
     <script>
-        document.getElementById('logoutButton').addEventListener('click', function () {
-            localStorage.removeItem('isLoggedIn');
-            localStorage.removeItem('userEmail');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userRole'); 
-            window.location.href = 'login.html';
-        });
+        class Melding {
+            constructor(id, categorie, beschrijving, locatie, specifiekeLocatie, naam, rol, datum, status) {
+                this.id = id;
+                this.categorie = categorie;
+                this.beschrijving = beschrijving;
+                this.locatie = locatie;
+                this.specifiekeLocatie = specifiekeLocatie;
+                this.naam = naam;
+                this.rol = rol;
+                this.datum = datum;
+                this.status = status;
+            }
 
-        function laadMeldingen() {
-            const meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
-            const actiefKolom = document.getElementById('actief');
-            const bezigKolom = document.getElementById('bezig');
-            const klaarKolom = document.getElementById('klaar');
-
-            meldingen.forEach(melding => {
-                const meldingElement = createMeldingElement(melding);
-                actiefKolom.appendChild(meldingElement);
-            });
-
-            implementDragAndDrop();
+            createMeldingElement() {
+                const meldingElement = document.createElement('div');
+                meldingElement.classList.add('melding');
+                meldingElement.draggable = true;
+                meldingElement.id = `melding-${this.id}`;
+                meldingElement.ondragstart = drag;
+                meldingElement.innerHTML = `
+                    <h3>${this.categorie}</h3>
+                    <p>${this.beschrijving}</p>
+                    <p>Locatie: ${this.locatie} ${this.specifiekeLocatie}</p>
+                    <p>Gemeld door: ${this.naam} (${this.rol})</p>
+                    <p>Datum: ${this.datum}</p>
+                `;
+                return meldingElement;
+            }
         }
 
-        function createMeldingElement(melding) {
-            const meldingElement = document.createElement('div');
-            meldingElement.classList.add('melding');
-            meldingElement.draggable = true;
-            meldingElement.id = `melding-${melding.id}`;
-            meldingElement.ondragstart = drag;
-            meldingElement.innerHTML = `
-                <h3>${melding.categorie}</h3>
-                <p>${melding.beschrijving}</p>
-                <p>Locatie: ${melding.locatie} ${melding.specifiekeLocatie}</p>
-                <p>Gemeld door: ${melding.naam} (${melding.rol})</p>
-                <p>Datum: ${melding.datum}</p>
-            `;
-            return meldingElement;
+        async function laadMeldingen() {
+            try {
+                const response = await fetch('meldingen.json');
+                const data = await response.json();
+                const actiefKolom = document.getElementById('actief');
+                const bezigKolom = document.getElementById('bezig');
+                const klaarKolom = document.getElementById('klaar');
+
+                data.forEach(meldingData => {
+                    const melding = new Melding(
+                        meldingData.id,
+                        meldingData.categorie,
+                        meldingData.beschrijving,
+                        meldingData.locatie,
+                        meldingData.specifiekeLocatie,
+                        meldingData.naam,
+                        meldingData.rol,
+                        meldingData.datum,
+                        meldingData.status
+                    );
+                    const meldingElement = melding.createMeldingElement();
+                    
+                    if (meldingData.status === 'actief') {
+                        actiefKolom.appendChild(meldingElement);
+                    } else if (meldingData.status === 'bezig') {
+                        bezigKolom.appendChild(meldingElement);
+                    } else {
+                        klaarKolom.appendChild(meldingElement);
+                    }
+                });
+
+                implementDragAndDrop();
+            } catch (error) {
+                console.error("Fout bij het laden van meldingen:", error);
+            }
         }
 
         function implementDragAndDrop() {
@@ -201,42 +224,13 @@
             });
         }
 
-        function allowDrop(ev) {
-            ev.preventDefault();
-        }
-
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-
-        function drop(ev) {
-            ev.preventDefault();
-            var data = ev.dataTransfer.getData("text");
-            ev.target.closest('.kolom').appendChild(document.getElementById(data));
-            
-            // Update de status in localStorage
-            const meldingId = data.split('-')[1];
-            const nieuweStatus = ev.target.closest('.kolom').id;
-            updateMeldingStatus(meldingId, nieuweStatus);
-        }
-
-        function updateMeldingStatus(id, nieuweStatus) {
-            let meldingen = JSON.parse(localStorage.getItem('meldingen')) || [];
-            const index = meldingen.findIndex(m => m.id.toString() === id);
-            if (index !== -1) {
-                meldingen[index].status = nieuweStatus;
-                localStorage.setItem('meldingen', JSON.stringify(meldingen));
-            }
-        }
-
-        window.addEventListener('message', function(event) {
-            if (event.data.type === 'nieuweMelding') {
-                const nieuweMelding = createMeldingElement(event.data.melding);
-                document.getElementById('actief').appendChild(nieuweMelding);
-            }
+        document.getElementById('logoutButton').addEventListener('click', function () {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
         });
 
         document.addEventListener('DOMContentLoaded', laadMeldingen);
     </script>
 </body>
 </html>
+    
