@@ -198,12 +198,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <nav>
             <div class="logo">mborijn/land</div>
             <ul class="nav-links">
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="informatie.html">INFORMATIE</a></li>
-                <li><a href="contact.html">CONTACT</a></li>
-                <li><a href="#">MELDING MAKEN</a></li>
-                <li><a href="meldingen_overzicht.php">OVERZICHT</a></li>
-            </ul>
+            <li><a href="index.php">HOME</a></li>
+            <li><a href="informatie.html">INFORMATIE</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+            <li><a href="melding_maken.php">MELDING MAKEN</a></li>
+            <li><a href="meldingen_overzicht.php">OVERZICHT</a></li>
+        </ul>
             <div class="auth-buttons">
                 <span id="welcomeMessage">Welkom!</span>
                 <button id="logoutButton">Uitloggen</button>
