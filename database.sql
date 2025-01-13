@@ -1,0 +1,1 @@
+SELECT * FROM gebruikers_db.meldingen;
