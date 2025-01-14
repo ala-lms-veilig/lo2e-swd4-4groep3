@@ -132,9 +132,9 @@ try {
         <nav>
             <div class="logo">mborijn/land</div>
             <ul class="nav-links">
-                <li><a href="index.php">HOME</a></li>
-                <li><a href="informatie.php">INFORMATIE</a></li>
-                <li><a href="contact.php">CONTACT</a></li>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="informatie.html">INFORMATIE</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
                 <li><a href="melding_maken.php">MELDING MAKEN</a></li>
             </ul>
             <div class="auth-buttons">
