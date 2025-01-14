@@ -34,15 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->bindParam(':role', $role);
         $stmt->execute();
 
+        // Verkrijg de gebruikersgegevens na registratie
+        $user_id = $conn->lastInsertId(); // Haal het ID van de nieuw aangemaakte gebruiker op
+
         // Stel de sessievariabelen in en log de gebruiker in
         $_SESSION['isLoggedIn'] = true;
         $_SESSION['userEmail'] = $email;
         $_SESSION['userName'] = $username;
         $_SESSION['userRole'] = $role;
+        $_SESSION['userId'] = $user_id; // Voeg het gebruikers-ID toe aan de sessie
 
-        // Succesbericht en doorverwijzing naar loginpagina
-        $success_message = "Registratie succesvol! Je wordt doorgestuurd naar de loginpagina.";
-        header('Location: login.php'); // Redirect naar de loginpagina
+        // Succesbericht en doorverwijzing naar de meldingenpagina
+        header('Location: melding_maken.php'); // Redirect naar de melding maken pagina
         exit();
     }
 }

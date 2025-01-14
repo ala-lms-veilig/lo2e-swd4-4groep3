@@ -1,28 +1,50 @@
 <?php
 session_start();
-include('db.php');
+include('db.php'); // Zorg ervoor dat db.php de PDO-verbinding gebruikt
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Controleer of gebruikers_id in de sessie beschikbaar is
+    if (!isset($_SESSION['gebruikers_id'])) {
+        echo "<script>alert('Je moet ingelogd zijn om een melding te maken.');</script>";
+        exit;
+    }
+
     // Verkrijg formulierdata
+    $gebruikers_id = $_SESSION['gebruikers_id']; // Haal gebruikers_id uit de sessie
     $categorie = $_POST['categorie'];
     $beschrijving = $_POST['beschrijving'];
     $locatie = $_POST['locatie'];
-    $specifiekeLocatie = $_POST['specifiekeLocatie'];
-    $naam = $_POST['naam'];
-    $rol = $_POST['rol'];
+    $specifiekeLocatie = $_POST['specifiekeLocatie'] ?? null; // Optioneel veld
     $datum = date('Y-m-d H:i:s');
 
-    // SQL-query om melding op te slaan
-    $sql = "INSERT INTO meldingen (categorie, beschrijving, locatie, specifieke_locatie, naam, rol, datum)
-            VALUES ('$categorie', '$beschrijving', '$locatie', '$specifiekeLocatie', '$naam', '$rol', '$datum')";
+    // Prepared statement om SQL-injecties te voorkomen (met PDO)
+    $sql = "INSERT INTO meldingen (categorie, beschrijving, locatie, specifieke_locatie, datum, gebruikers_id) 
+            VALUES (:categorie, :beschrijving, :locatie, :specifiekeLocatie, :datum, :gebruikers_id)";
+    
+    // Bereid de statement voor
+    $stmt = $conn->prepare($sql);
+    
+    // Bind de parameters
+    $stmt->bindParam(':categorie', $categorie);
+    $stmt->bindParam(':beschrijving', $beschrijving);
+    $stmt->bindParam(':locatie', $locatie);
+    $stmt->bindParam(':specifiekeLocatie', $specifiekeLocatie);
+    $stmt->bindParam(':datum', $datum);
+    $stmt->bindParam(':gebruikers_id', $gebruikers_id);
 
-    if ($conn->query($sql) === TRUE) {
+    // Voer de query uit
+    if ($stmt->execute()) {
         echo "<script>alert('Melding succesvol opgeslagen!');</script>";
     } else {
-        echo "<script>alert('Fout bij het opslaan van de melding: " . $conn->error . "');</script>";
+        echo "<script>alert('Fout bij het opslaan van de melding.');</script>";
     }
 }
+
+// Haal naam en rol op uit de sessie
+$naam = $_SESSION['userName'] ?? 'Onbekend'; // Gebruik een standaardwaarde als naam ontbreekt
+$rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als rol ontbreekt
 ?>
+
 
 <!DOCTYPE html>
 <html lang="nl">
@@ -198,21 +220,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <nav>
             <div class="logo">mborijn/land</div>
             <ul class="nav-links">
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="informatie.html">INFORMATIE</a></li>
-            <li><a href="contact.html">CONTACT</a></li>
-            <li><a href="melding_maken.php">MELDING MAKEN</a></li>
-            <li><a href="meldingen_overzicht.php">OVERZICHT</a></li>
-        </ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="informatie.html">INFORMATIE</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="melding_maken.php">MELDING MAKEN</a></li>
+                <li><a href="meldingen_overzicht.php">OVERZICHT</a></li>
+            </ul>
             <div class="auth-buttons">
-                <span id="welcomeMessage">Welkom!</span>
-                <button id="logoutButton">Uitloggen</button>
+                <span id="welcomeMessage">Welkom, <?php echo htmlspecialchars($naam); ?>!</span>
+                <button id="logoutButton" onclick="location.href='logout.php'">Uitloggen</button>
                 <button id="beheerderLink" onclick="location.href='beheerder-dashboard.html'">Beheerder Dashboard</button>
-                <div class="hamburger" id="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
             </div>
         </nav>
     </header>
@@ -249,10 +266,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <h2>Persoonlijke Gegevens</h2>
 
             <label for="naam">Naam:</label>
-            <input type="text" id="naam" name="naam" required readonly value="<?php echo $_SESSION['userName']; ?>">
+            <input type="text" id="naam" name="naam" required readonly value="<?php echo htmlspecialchars($naam); ?>">
 
             <label for="rol">Rol:</label>
-            <input type="text" id="rol" name="rol" required readonly value="<?php echo $_SESSION['userRole']; ?>">
+            <input type="text" id="rol" name="rol" required readonly value="<?php echo htmlspecialchars($rol); ?>">
 
             <div class="button-group">
                 <input type="submit" value="Verzenden">

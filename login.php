@@ -1,29 +1,45 @@
 <?php
 session_start();
-include('db.php');
+include('db.php'); // Zorg ervoor dat dit bestand de PDO-connectie correct bevat
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // Verkrijg ingevoerde gegevens
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
 
-    $stmt = $conn->prepare("SELECT * FROM gebruikers WHERE email = :email");
-    $stmt->bindParam(':email', $email);
-    $stmt->execute();
-    $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Controleer of de velden niet leeg zijn
+        if (empty($email) || empty($password)) {
+            throw new Exception("Alle velden zijn verplicht.");
+        }
 
-    if ($gebruiker && password_verify($password, $gebruiker['wachtwoord'])) {
-        $_SESSION['isLoggedIn'] = true;
-        $_SESSION['userEmail'] = $gebruiker['email'];
-        $_SESSION['userName'] = $gebruiker['gebruikersnaam'];
-        $_SESSION['userRole'] = $gebruiker['rol'];
-        
-        header('Location: melding_maken.php'); // Verwijs naar de homepagina
-        exit();
-    } else {
-        $error_message = "Ongeldig e-mailadres of wachtwoord.";
+        // Bereid de query voor om de gebruiker op te halen
+        $stmt = $conn->prepare("SELECT * FROM gebruikers WHERE email = :email");
+        $stmt->execute([':email' => $email]);
+
+        // Haal de gebruiker op uit de database
+        $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($gebruiker && password_verify($password, $gebruiker['wachtwoord'])) {
+            // Stel sessiegegevens in
+            $_SESSION['isLoggedIn'] = true;
+            $_SESSION['gebruikers_id'] = $gebruiker['gebruikers_id']; // Sla gebruikers_id op
+            $_SESSION['userEmail'] = $gebruiker['email'];
+            $_SESSION['naam'] = $gebruiker['gebruikersnaam'];
+            $_SESSION['rol'] = $gebruiker['rol'];
+
+            // Stuur de gebruiker door naar de meldingenpagina
+            header('Location: melding_maken.php');
+            exit();
+        } else {
+            throw new Exception("Ongeldig e-mailadres of wachtwoord.");
+        }
+    } catch (Exception $e) {
+        $error_message = $e->getMessage();
     }
 }
 ?>
+
 
 <!-- HTML Formulier voor login -->
 <!DOCTYPE html>
