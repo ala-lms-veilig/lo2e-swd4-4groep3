@@ -18,8 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $datum = date('Y-m-d H:i:s');
 
     // Prepared statement om SQL-injecties te voorkomen (met PDO)
-    $sql = "INSERT INTO meldingen (categorie, beschrijving, locatie, specifieke_locatie, datum, gebruikers_id) 
-            VALUES (:categorie, :beschrijving, :locatie, :specifiekeLocatie, :datum, :gebruikers_id)";
+    $sql = "INSERT INTO meldingen (categorie, beschrijving, locatie, specifieke_locatie, datum, gebruikers_id, status) 
+        VALUES (:categorie, :beschrijving, :locatie, :specifiekeLocatie, :datum, :gebruikers_id, 'actief')";
+
     
     // Bereid de statement voor
     $stmt = $conn->prepare($sql);
@@ -228,7 +229,7 @@ $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als r
             </ul>
             <div class="auth-buttons">
                 <span id="welcomeMessage">Welkom, <?php echo htmlspecialchars($naam); ?>!</span>
-                <button id="logoutButton" onclick="location.href='logout.php'">Uitloggen</button>
+                <button id="logoutButton" onclick="location.href='login.php'">Uitloggen</button>
                 <button id="beheerderLink" onclick="location.href='beheerder-dashboard.html'">Beheerder Dashboard</button>
             </div>
         </nav>

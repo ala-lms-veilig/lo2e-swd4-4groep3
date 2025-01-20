@@ -1,17 +1,17 @@
 <?php
 // Verbinding met database
 $dsn = 'mysql:host=localhost;dbname=gebruikers_db';
-$username = 'root'; // Standaard gebruikersnaam
-$password = '';     // Leeg wachtwoord
-
+$username = 'root';
+$password = '';
 
 try {
     $pdo = new PDO($dsn, $username, $password);
-   
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Meldingen ophalen
-    $query = "SELECT * FROM meldingen";
+    // Meldingen ophalen (koppeling via gebruikers_id en melding_id)
+    $query = "SELECT meldingen.*, gebruikers.gebruikersnaam AS gebruiker_naam, gebruikers.rol AS gebruiker_rol 
+              FROM meldingen 
+              LEFT JOIN gebruikers ON meldingen.melding_id = gebruikers.gebruikers_id";
     $stmt = $pdo->query($query);
     $meldingen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -27,182 +27,131 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meldingen Overzicht</title>
     <style>
-                .container {
-            display: flex;
-            justify-content: space-between;
-        }
-        .kolom {
-            flex: 1;
-            margin: 0 10px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-radius: 5px;
-            min-height: 300px;
-        }
-        .melding {
-            background-color: white;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 3px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-            cursor: move;
-        }
-        .kolommen-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 60px;
-        }
-        .kolom {
-            flex: 1;
-            margin: 0 10px;
-            background-color: #f0f0f0;
-            border-radius: 8px;
-            padding: 10px;
-        }
-        .kolom h2 {
-            text-align: center;
-            color: #333;
-        }
-        .melding.dragging {
-            opacity: 0.5;
-        }
-
-        * {
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            color: #333;
         }
 
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        nav {
+        header {
             background-color: #2E0E4A;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 50px;
-            width: 100%;
-            position: fixed;
-            top: 0;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
             color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 20px;
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
         }
 
-        .nav-links li a {
-            color: white;
+        header a {
             text-decoration: none;
-            font-size: 16px;
-            padding: 10px 20px;
-            background-color: #ec4a67;
-            border-radius: 4px;
-        }
-
-        #logoutButton {
-            background-color: #f5515f;
             color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            font-weight: bold;
+            background-color: #0056b3;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
         }
 
-        #logoutButton:hover {
-            background-color: #d9404d;
+        header a:hover {
+            background-color: #00408d;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .melding {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .melding:hover {
+            background-color: #f0f8ff;
+        }
+
+        .melding:last-child {
+            border-bottom: none;
+        }
+
+        .melding h3 {
+            margin: 0;
+            color: #007BFF;
+            font-size: 1.5rem;
+        }
+
+        .melding p {
+            margin: 5px 0;
+            color: #555;
+            display: none; /* Verborgen tot aangeklikt */
+        }
+
+        .melding.active p {
+            display: block; /* Toon details als actief */
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px 0;
+            background-color: #f4f4f9;
+            color: #777;
+        }
+
+        footer p {
+            margin: 0;
         }
     </style>
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">mborijn/land</div>
-            <ul class="nav-links">
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="informatie.html">INFORMATIE</a></li>
-                <li><a href="contact.html">CONTACT</a></li>
-                <li><a href="melding_maken.php">MELDING MAKEN</a></li>
-            </ul>
-            <div class="auth-buttons">
-                <span id="welcomeMessage">Welkom!</span>
-                <button id="logoutButton">Uitloggen</button>
-            </div>
-        </nav>
+        <h1>Meldingen Overzicht</h1>
+        <a href="index.html">Home</a>
     </header>
-    <div class="kolommen-container">
-        <div class="kolom" id="actief">
-            <h2>Actieve Taken</h2>
+
+    <div class="container">
+        <?php if (empty($meldingen)): ?>
+            <p>Geen meldingen gevonden.</p>
+        <?php else: ?>
             <?php foreach ($meldingen as $melding): ?>
-                <?php if ($melding['status'] === 'actief'): ?>
-                    <div class="melding" draggable="true" id="melding-<?= $melding['id'] ?>">
-                        <h3><?= htmlspecialchars($melding['categorie']) ?></h3>
-                        <p><?= htmlspecialchars($melding['beschrijving']) ?></p>
-                        <p>Locatie: <?= htmlspecialchars($melding['locatie']) ?> <?= htmlspecialchars($melding['specifieke_locatie']) ?></p>
-                        <p>Gemeld door: <?= htmlspecialchars($melding['naam']) ?> (<?= htmlspecialchars($melding['rol']) ?>)</p>
-                        <p>Datum: <?= htmlspecialchars($melding['datum']) ?></p>
-                    </div>
-                <?php endif; ?>
+                <div class="melding" data-id="<?= htmlspecialchars($melding['id'] ?? 'Onbekend') ?>">
+                    <h3><?= htmlspecialchars($melding['categorie'] ?? 'Onbekend') ?></h3>
+                    <p><?= htmlspecialchars($melding['beschrijving'] ?? 'Geen beschrijving beschikbaar') ?></p>
+                    <p>Locatie: <?= htmlspecialchars($melding['locatie'] ?? 'Onbekend') ?>
+                        <?= htmlspecialchars($melding['specifieke_locatie'] ?? '') ?></p>
+                    <p>Gemeld door: 
+                        <?= htmlspecialchars($melding['gebruiker_naam'] ?? 'Onbekend') ?> 
+                        (<?= htmlspecialchars($melding['gebruiker_rol'] ?? 'Onbekend') ?>)
+                    </p>
+                    <p>Datum: <?= htmlspecialchars($melding['datum'] ?? 'Onbekend') ?></p>
+                </div>
             <?php endforeach; ?>
-        </div>
-        <div class="kolom" id="bezig">
-            <h2>Bezig</h2>
-            <?php foreach ($meldingen as $melding): ?>
-                <?php if ($melding['status'] === 'bezig'): ?>
-                    <div class="melding" draggable="true" id="melding-<?= $melding['id'] ?>">
-                        <h3><?= htmlspecialchars($melding['categorie']) ?></h3>
-                        <p><?= htmlspecialchars($melding['beschrijving']) ?></p>
-                        <p>Locatie: <?= htmlspecialchars($melding['locatie']) ?> <?= htmlspecialchars($melding['specifieke_locatie']) ?></p>
-                        <p>Gemeld door: <?= htmlspecialchars($melding['naam']) ?> (<?= htmlspecialchars($melding['rol']) ?>)</p>
-                        <p>Datum: <?= htmlspecialchars($melding['datum']) ?></p>
-                    </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </div>
-        <div class="kolom" id="klaar">
-            <h2>Klaar</h2>
-            <?php foreach ($meldingen as $melding): ?>
-                <?php if ($melding['status'] === 'klaar'): ?>
-                    <div class="melding" draggable="true" id="melding-<?= $melding['id'] ?>">
-                        <h3><?= htmlspecialchars($melding['categorie']) ?></h3>
-                        <p><?= htmlspecialchars($melding['beschrijving']) ?></p>
-                        <p>Locatie: <?= htmlspecialchars($melding['locatie']) ?> <?= htmlspecialchars($melding['specifieke_locatie']) ?></p>
-                        <p>Gemeld door: <?= htmlspecialchars($melding['naam']) ?> (<?= htmlspecialchars($melding['rol']) ?>)</p>
-                        <p>Datum: <?= htmlspecialchars($melding['datum']) ?></p>
-                    </div>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </div>
+        <?php endif; ?>
     </div>
+
+    <footer>
+        <p>&copy; <?= date("Y") ?> Meldingen Overzicht. Alle rechten voorbehouden.</p>
+    </footer>
+
     <script>
-        // JavaScript voor drag-and-drop (ongewijzigd)
         document.querySelectorAll('.melding').forEach(melding => {
-            melding.addEventListener('dragstart', () => melding.classList.add('dragging'));
-            melding.addEventListener('dragend', () => melding.classList.remove('dragging'));
-        });
-        document.querySelectorAll('.kolom').forEach(kolom => {
-            kolom.addEventListener('dragover', e => {
-                e.preventDefault();
-                const dragging = document.querySelector('.dragging');
-                kolom.appendChild(dragging);
+            melding.addEventListener('click', () => {
+                melding.classList.toggle('active');
             });
-        });
-        document.getElementById('logoutButton').addEventListener('click', () => {
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = 'login.php';
         });
     </script>
 </body>
