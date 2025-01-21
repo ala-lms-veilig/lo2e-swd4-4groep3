@@ -52,7 +52,7 @@ try {
             text-decoration: none;
             color: white;
             font-weight: bold;
-            background-color: #0056b3;
+            background-color: #ec4a67;
             padding: 10px 20px;
             border-radius: 5px;
             margin-top: 10px;
@@ -61,7 +61,7 @@ try {
         }
 
         header a:hover {
-            background-color: #00408d;
+            background-color: #ec4a67;;
         }
 
         .container {
