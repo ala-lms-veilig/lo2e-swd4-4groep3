@@ -198,6 +198,120 @@ $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als r
             background-color: #d9404d;
         }
 
+
+
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  justify-content: center;
+}
+
+.plattegrond {
+  display: flex;
+  gap: 20px;
+  background-color: #e0e0e0;
+  padding: 20px;
+  border: 2px solid #000;
+  justify-content: center;
+}
+
+.toren {
+  display: flex;
+  flex-direction: column-reverse; /* Verdiepingen worden van onder naar boven weergegeven */
+  align-items: center;
+  justify-content: flex-start;
+  width: 100px;
+  background-color: #d9d9d9;
+  border: 2px solid #000;
+  padding: 10px;
+  text-align: center;
+}
+
+.verdieping {
+  width: 80px;
+  height: 30px;
+  background-color: #4caf50;
+  border: 1px solid #000;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.verdieping:hover {
+  background-color: #388e3c;
+}
+
+.verdieping.aula {
+  background-color: #ff9800; /* Aula krijgt een andere kleur */
+}
+
+.verdieping.aula:hover {
+  background-color: #e65100;
+}
+
+/* Pop-up styling */
+#mapPopup {
+  display: none;
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background: white;
+  border: 2px solid #000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+#mapOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+#mapPopup h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+}
+
+#mapPopup button {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+#mapPopup button:hover {
+  background: darkred;
+}
+
+
+
+
+
+
+
+        
         footer {
             background-color: #2E0E4A;
             padding: 20px;
@@ -255,10 +369,65 @@ $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als r
             </select>
 
             <label for="specifiekeLocatie">Specifieke locatie:</label>
-            <textarea id="specifiekeLocatie" name="specifiekeLocatie" placeholder="Specifieke locatie (bijv. bij de ingang van de aula)"></textarea>
+<input type="text" id="specifiekeLocatie" name="specifiekeLocatie" placeholder="Klik op een toren en verdieping" readonly>
 
-            <label for="beschrijving">Beschrijving incident:</label>
-            <textarea name="beschrijving" id="beschrijving" rows="5" required placeholder="Beschrijf het incident zo compleet mogelijk..."></textarea>
+<!-- Knop voor interactieve plattegrond -->
+<button type="button" id="openMapBtn" onclick="openMapPopup()">Selecteer via plattegrond</button>
+
+<!-- Pop-up container -->
+<div id="mapPopup" style="display: none; position: fixed; top: 10%; left: 10%; width: 80%; height: 80%; background: white; border: 2px solid #000; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000;">
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #2E0E4A; color: white;">
+    <h3>Selecteer een specifieke locatie</h3>
+    <button onclick="closeMapPopup()" style="background: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">Sluiten</button>
+  </div>
+  <div style="padding: 20px;">
+    <div class="plattegrond">
+      <!-- Toren A -->
+      <div class="toren">
+        <h3>Toren A</h3>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 1')">1</div>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 2')">2</div>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 3')">3</div>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 4')">4</div>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 5')">5</div>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 6')">6</div>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 7')">7</div>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 8')">8</div>
+        <div class="verdieping" onclick="selectLocation('Toren A - Verdieping 9')">9</div>
+      </div>
+
+      <!-- Toren B -->
+      <div class="toren">
+        <h3>Toren B</h3>
+        <div class="verdieping" onclick="selectLocation('Toren B - Verdieping 1')">1</div>
+        <div class="verdieping" onclick="selectLocation('Toren B - Verdieping 2')">2</div>
+        <div class="verdieping aula" onclick="selectLocation('Toren B - Aula')">Aula</div>
+        <div class="verdieping" onclick="selectLocation('Toren B - Verdieping 4')">4</div>
+        <div class="verdieping" onclick="selectLocation('Toren B - Verdieping 5')">5</div>
+        <div class="verdieping" onclick="selectLocation('Toren B - Verdieping 6')">6</div>
+        <div class="verdieping" onclick="selectLocation('Toren B - Verdieping 7')">7</div>
+        <div class="verdieping" onclick="selectLocation('Toren B - Verdieping 8')">8</div>
+      </div>
+
+      <!-- Toren C -->
+      <div class="toren">
+        <h3>Toren C</h3>
+        <div class="verdieping" onclick="selectLocation('Toren C - Verdieping 1')">1</div>
+        <div class="verdieping" onclick="selectLocation('Toren C - Verdieping 2')">2</div>
+        <div class="verdieping" onclick="selectLocation('Toren C - Verdieping 3')">3</div>
+        <div class="verdieping" onclick="selectLocation('Toren C - Verdieping 4')">4</div>
+        <div class="verdieping" onclick="selectLocation('Toren C - Verdieping 5')">5</div>
+        <div class="verdieping" onclick="selectLocation('Toren C - Verdieping 6')">6</div>
+        <div class="verdieping" onclick="selectLocation('Toren C - Verdieping 7')">7</div>
+        <div class="verdieping" onclick="selectLocation('Toren C - Verdieping 8')">8</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay -->
+<div id="mapOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;" onclick="closeMapPopup()"></div>
+
 
             <h2>Persoonlijke Gegevens</h2>
 
@@ -273,6 +442,23 @@ $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als r
             </div>
         </form>
     </main>
+
+    <script>
+  function openMapPopup() {
+    document.getElementById('mapPopup').style.display = 'block';
+    document.getElementById('mapOverlay').style.display = 'block';
+  }
+
+  function closeMapPopup() {
+    document.getElementById('mapPopup').style.display = 'none';
+    document.getElementById('mapOverlay').style.display = 'none';
+  }
+
+  function selectLocation(location) {
+    document.getElementById('specifiekeLocatie').value = location;
+    closeMapPopup();
+  }
+</script>
 
     <footer>
         <p>&copy; 2024 mborijn/land. Alle rechten voorbehouden.</p>

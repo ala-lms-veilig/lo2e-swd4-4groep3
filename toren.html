@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plattegrond Torens</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    .plattegrond {
+      display: flex;
+      gap: 20px;
+      background-color: #e0e0e0;
+      padding: 20px;
+      border: 2px solid #000;
+    }
+
+    .toren {
+      display: flex;
+      flex-direction: column-reverse; /* Verdiepingen worden van onder naar boven weergegeven */
+      align-items: center;
+      justify-content: flex-start;
+      width: 100px;
+      background-color: #d9d9d9;
+      border: 2px solid #000;
+      padding: 10px;
+    }
+
+    .verdieping {
+      width: 80px;
+      height: 30px;
+      background-color: #4caf50;
+      border: 1px solid #000;
+      margin-bottom: 3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .verdieping.aula {
+      background-color: #ff9800; /* Aula krijgt een andere kleur */
+    }
+  </style>
+</head>
+<body>
+  <div class="plattegrond">
+    <!-- Toren 1 met 9 verdiepingen -->
+    <div class="toren">
+        <h3>Toren A</h3>
+      <div class="verdieping">1</div>
+      <div class="verdieping">2</div>
+      <div class="verdieping">3</div>
+      <div class="verdieping">4</div>
+      <div class="verdieping">5</div>
+      <div class="verdieping">6</div>
+      <div class="verdieping">7</div>
+      <div class="verdieping">8</div>
+      <div class="verdieping">9</div>
+    </div>
+
+    <!-- Toren 2 met 8 verdiepingen en een aula -->
+    <div class="toren">
+        <h3>Toren B</h3>
+      <div class="verdieping">1</div>
+      <div class="verdieping">2</div>
+      <div class="verdieping aula">Aula</div>
+      <div class="verdieping">4</div>
+      <div class="verdieping">5</div>
+      <div class="verdieping">6</div>
+      <div class="verdieping">7</div>
+      <div class="verdieping">8</div>
+    </div>
+
+    <!-- Toren 3 met 8 verdiepingen -->
+    <div class="toren">
+        <h3>Toren C</h3>
+        <div class="verdieping">1</div>
+        <div class="verdieping">2</div>
+        <div class="verdieping">3</div>
+        <div class="verdieping">4</div>
+        <div class="verdieping">5</div>
+        <div class="verdieping">6</div>
+        <div class="verdieping">7</div>
+        <div class="verdieping">8</div>
+    </div>
+  </div>
+</body>
+</html>
