@@ -23,10 +23,11 @@ try {
         exit;
     }
 
-    // Meldingen ophalen met de juiste relatie
+    // Meldingen ophalen en sorteren op categorie
     $query = "SELECT meldingen.*, gebruikers.gebruikersnaam AS gebruiker_naam, gebruikers.rol AS gebruiker_rol 
               FROM meldingen 
-              LEFT JOIN gebruikers ON meldingen.gebruikers_id = gebruikers.gebruikers_id";
+              LEFT JOIN gebruikers ON meldingen.gebruikers_id = gebruikers.gebruikers_id
+              ORDER BY meldingen.categorie, meldingen.datum DESC";
     $stmt = $pdo->query($query);
     $meldingen = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -43,7 +44,7 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meldingen Overzicht</title>
     <style>
-        body {
+                body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f9;
             margin: 0;
@@ -163,10 +164,22 @@ try {
     </header>
 
     <div class="container">
-        <?php if (empty($meldingen)): ?>
-            <p>Geen meldingen gevonden.</p>
-        <?php else: ?>
-            <?php foreach ($meldingen as $melding): ?>
+        <?php
+        if (empty($meldingen)) {
+            echo "<p>Geen meldingen gevonden.</p>";
+        } else {
+            $huidigeCategorie = '';
+            foreach ($meldingen as $melding) {
+                if ($melding['categorie'] !== $huidigeCategorie) {
+                    // Nieuwe categorie header
+                    if ($huidigeCategorie !== '') {
+                        echo "</div>"; // Sluit vorige categoriegroep af
+                    }
+                    $huidigeCategorie = $melding['categorie'];
+                    echo "<div class='categorie-groep'>";
+                    echo "<h2>" . htmlspecialchars($huidigeCategorie) . "</h2>";
+                }
+                ?>
                 <div class="melding" data-id="<?= htmlspecialchars($melding['melding_id']) ?>">
                     <h3><?= htmlspecialchars($melding['categorie']) ?></h3>
                     <p><?= htmlspecialchars($melding['beschrijving']) ?></p>
@@ -180,8 +193,11 @@ try {
                         </form>
                     <?php endif; ?>
                 </div>
-            <?php endforeach; ?>
-        <?php endif; ?>
+                <?php
+            }
+            echo "</div>"; // Sluit laatste categoriegroep af
+        }
+        ?>
     </div>
 
     <footer>
