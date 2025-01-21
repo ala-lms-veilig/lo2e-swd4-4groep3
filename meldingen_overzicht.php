@@ -8,12 +8,13 @@ try {
     $pdo = new PDO($dsn, $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Meldingen ophalen (koppeling via gebruikers_id en melding_id)
+    // Meldingen ophalen met de juiste relatie
     $query = "SELECT meldingen.*, gebruikers.gebruikersnaam AS gebruiker_naam, gebruikers.rol AS gebruiker_rol 
               FROM meldingen 
-              LEFT JOIN gebruikers ON meldingen.melding_id = gebruikers.gebruikers_id";
+              LEFT JOIN gebruikers ON meldingen.gebruikers_id = gebruikers.gebruikers_id";
     $stmt = $pdo->query($query);
     $meldingen = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     echo "Databasefout: " . $e->getMessage();
     exit;
