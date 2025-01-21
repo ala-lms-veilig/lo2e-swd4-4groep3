@@ -14,14 +14,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $categorie = $_POST['categorie'];
     $beschrijving = $_POST['beschrijving'];
     $locatie = $_POST['locatie'];
-    $specifiekeLocatie = $_POST['specifiekeLocatie'] ?? null; // Optioneel veld
+    $specifiekeLocatie = $_POST['specifiekeLocatie']; // Zorg dat dit veld altijd wordt meegenomen
     $datum = date('Y-m-d H:i:s');
+
+    // Controleer of specifieke locatie ingevuld is, tenzij locatie "aula" is
+    if (empty($specifiekeLocatie) && $locatie !== 'aula') {
+        echo "<script>alert('Vul een specifieke locatie in.');</script>";
+        exit;
+    }
 
     // Prepared statement om SQL-injecties te voorkomen (met PDO)
     $sql = "INSERT INTO meldingen (categorie, beschrijving, locatie, specifieke_locatie, datum, gebruikers_id, status) 
         VALUES (:categorie, :beschrijving, :locatie, :specifiekeLocatie, :datum, :gebruikers_id, 'actief')";
 
-    
     // Bereid de statement voor
     $stmt = $conn->prepare($sql);
     
@@ -46,7 +51,6 @@ $naam = $_SESSION['userName'] ?? 'Onbekend'; // Gebruik een standaardwaarde als 
 $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als rol ontbreekt
 ?>
 
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -55,6 +59,7 @@ $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als r
     <title>Melding Maken</title>
     <script defer src="hamburger.js"></script>
     <style>
+        /* Algemene stijlen */
         * {
             margin: 0;
             padding: 0;
@@ -145,7 +150,7 @@ $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als r
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 800px;
-            margin: 50px auto;
+            margin: 100px auto;
         }
 
         h1 {
@@ -204,16 +209,6 @@ $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als r
             color: white;
             font-size: 18px;
         }
-
-        #specifiekeLocatie {
-            display: none;
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 10px;
-            display: none; 
-        }
     </style>
 </head>
 <body>
@@ -254,11 +249,12 @@ $rol = $_SESSION['userRole'] ?? 'Onbekend'; // Gebruik een standaardwaarde als r
             <select name="locatie" id="locatie" required>
                 <option value="">-- Maak een keuze --</option>
                 <option value="aula">Aula</option>
-                <option value="locatie1">Locatie 1</option>
-                <option value="locatie2">Locatie 2</option>
-                <option value="locatie3">Locatie 3</option>
+                <option value="locatie1">toren A</option>
+                <option value="locatie2">toren B</option>
+                <option value="locatie3">toren C</option>
             </select>
 
+            <label for="specifiekeLocatie">Specifieke locatie:</label>
             <textarea id="specifiekeLocatie" name="specifiekeLocatie" placeholder="Specifieke locatie (bijv. bij de ingang van de aula)"></textarea>
 
             <label for="beschrijving">Beschrijving incident:</label>
