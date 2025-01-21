@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p><a href="change_password.php">Wachtwoord vergeten?</a></p>
         <?php if (isset($error_message)) { echo "<p class='error-message'>$error_message</p>"; } ?>
         <button class="register-btn" onclick="window.location.href='register.php'">Registreren</button>
-        <button class="back-btn" onclick="window.location.href='index.php'">Terug naar hoofdpagina</button>
+        <button class="back-btn" onclick="window.location.href='index.html'">Terug naar hoofdpagina</button>
     </div>
 </body>
 </html>

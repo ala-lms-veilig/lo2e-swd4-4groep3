@@ -1,5 +1,6 @@
 <?php
 // Verbinding met database
+session_start();
 $dsn = 'mysql:host=localhost;dbname=gebruikers_db';
 $username = 'root';
 $password = '';
@@ -7,6 +8,20 @@ $password = '';
 try {
     $pdo = new PDO($dsn, $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Controle of de gebruiker een beheerder is
+    $isAdmin = isset($_SESSION['rol']) && $_SESSION['rol'] === 'beheerder';
+
+    // Verwijder melding als de beheerder een verzoek stuurt
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id']) && $isAdmin) {
+        $deleteId = intval($_POST['delete_id']);
+        $deleteQuery = "DELETE FROM meldingen WHERE melding_id = :id";
+        $deleteStmt = $pdo->prepare($deleteQuery);
+        $deleteStmt->bindParam(':id', $deleteId, PDO::PARAM_INT);
+        $deleteStmt->execute();
+        header("Location: meldingen_overzicht.php");
+        exit;
+    }
 
     // Meldingen ophalen met de juiste relatie
     $query = "SELECT meldingen.*, gebruikers.gebruikersnaam AS gebruiker_naam, gebruikers.rol AS gebruiker_rol 
@@ -62,7 +77,7 @@ try {
         }
 
         header a:hover {
-            background-color: #ec4a67;;
+            background-color: #d93450;
         }
 
         .container {
@@ -73,10 +88,22 @@ try {
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
+        #logoutButton {
+            background-color: #f5515f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #logoutButton:hover {
+            background-color: #d9404d;
+        }
 
         .melding {
             border-bottom: 1px solid #ddd;
-            padding: 15px 0;
+            padding: 10px 20px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -98,11 +125,21 @@ try {
         .melding p {
             margin: 5px 0;
             color: #555;
-            display: none; /* Verborgen tot aangeklikt */
         }
 
-        .melding.active p {
-            display: block; /* Toon details als actief */
+        button {
+            font-size: 1rem;
+            color: white;
+            background-color: red;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: darkred;
         }
 
         footer {
@@ -122,6 +159,7 @@ try {
     <header>
         <h1>Meldingen Overzicht</h1>
         <a href="index.html">Home</a>
+        <button id="logoutButton" onclick="location.href='login.php'">Uitloggen</button>
     </header>
 
     <div class="container">
@@ -129,16 +167,18 @@ try {
             <p>Geen meldingen gevonden.</p>
         <?php else: ?>
             <?php foreach ($meldingen as $melding): ?>
-                <div class="melding" data-id="<?= htmlspecialchars($melding['id'] ?? 'Onbekend') ?>">
-                    <h3><?= htmlspecialchars($melding['categorie'] ?? 'Onbekend') ?></h3>
-                    <p><?= htmlspecialchars($melding['beschrijving'] ?? 'Geen beschrijving beschikbaar') ?></p>
-                    <p>Locatie: <?= htmlspecialchars($melding['locatie'] ?? 'Onbekend') ?>
-                        <?= htmlspecialchars($melding['specifieke_locatie'] ?? '') ?></p>
-                    <p>Gemeld door: 
-                        <?= htmlspecialchars($melding['gebruiker_naam'] ?? 'Onbekend') ?> 
-                        (<?= htmlspecialchars($melding['gebruiker_rol'] ?? 'Onbekend') ?>)
-                    </p>
-                    <p>Datum: <?= htmlspecialchars($melding['datum'] ?? 'Onbekend') ?></p>
+                <div class="melding" data-id="<?= htmlspecialchars($melding['melding_id']) ?>">
+                    <h3><?= htmlspecialchars($melding['categorie']) ?></h3>
+                    <p><?= htmlspecialchars($melding['beschrijving']) ?></p>
+                    <p>Locatie: <?= htmlspecialchars($melding['locatie']) ?> <?= htmlspecialchars($melding['specifieke_locatie'] ?? '') ?></p>
+                    <p>Gemeld door: <?= htmlspecialchars($melding['gebruiker_naam']) ?> (<?= htmlspecialchars($melding['gebruiker_rol']) ?>)</p>
+                    <p>Datum: <?= htmlspecialchars($melding['datum']) ?></p>
+                    <?php if ($isAdmin): ?>
+                        <form method="post" style="display:inline;">
+                            <input type="hidden" name="delete_id" value="<?= htmlspecialchars($melding['melding_id']) ?>">
+                            <button type="submit">Verwijder</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -147,13 +187,5 @@ try {
     <footer>
         <p>&copy; <?= date("Y") ?> Meldingen Overzicht. Alle rechten voorbehouden.</p>
     </footer>
-
-    <script>
-        document.querySelectorAll('.melding').forEach(melding => {
-            melding.addEventListener('click', () => {
-                melding.classList.toggle('active');
-            });
-        });
-    </script>
 </body>
 </html>
